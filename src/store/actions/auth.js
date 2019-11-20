@@ -55,20 +55,19 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
 
 export const login = (email, password) => {
     return dispatch => {
-        const authData = {
+        const user = {
             email: email,
-            password: password,
-            returnSecureToken: true
+            password: password
         };
         //const url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyC93NeXpBVN_En7EAvqghEZU63moggPykU';
         const url = '/login';
 
-        axios.post(url, authData)
+        axios.post(url, user)
             .then(response => {
                 console.log("Login response");
                 console.log(response);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                sessionStorage.setItem('token', response.data.idToken);
+                // sessionStorage.setItem('token', response.data.idToken);
                 sessionStorage.setItem('expirationDate', expirationDate);
                 sessionStorage.setItem('userId', response.data.localId);
                 dispatch(loginSuccess(response.data.idToken, response.data.localId));
