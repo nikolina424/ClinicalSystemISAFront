@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import axios from '../../axios-objects';
+import jwt_decode from 'jwt-decode';
 
 export const registerSuccess = (token, userId) => {
     return {
@@ -68,8 +69,9 @@ export const login = (email, password) => {
                 console.log(response);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 sessionStorage.setItem('token', response.data.accessToken);
+                const jwtToken = jwt_decode(response.data.accessToken);
+                sessionStorage.setItem('role', jwtToken.role);
                 sessionStorage.setItem('expirationDate', expirationDate);
-                //sessionStorage.setItem('userId', response.data.localId);
                 dispatch(loginSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
