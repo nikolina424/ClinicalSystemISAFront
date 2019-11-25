@@ -39,11 +39,11 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
         if (password === repeatPassword) {
             axios.post(url, authData)
             .then(response => {
-                console.log(response);
-                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                sessionStorage.setItem('token', response.data.idToken);
-                sessionStorage.setItem('expirationDate', expirationDate);
-                sessionStorage.setItem('userId', response.data.localId);
+                console.log("Register response: " + response);
+                //const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+                // sessionStorage.setItem('token', response.data.idToken);
+                // sessionStorage.setItem('expirationDate', expirationDate);
+                // sessionStorage.setItem('userId', response.data.localId);
                 dispatch(registerSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
@@ -67,9 +67,9 @@ export const login = (email, password) => {
                 console.log("Login response");
                 console.log(response);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                // sessionStorage.setItem('token', response.data.idToken);
+                sessionStorage.setItem('token', response.data.accessToken);
                 sessionStorage.setItem('expirationDate', expirationDate);
-                sessionStorage.setItem('userId', response.data.localId);
+                //sessionStorage.setItem('userId', response.data.localId);
                 dispatch(loginSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {

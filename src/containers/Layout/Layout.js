@@ -68,7 +68,6 @@ class Layout extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         added: state.object.added,
         logged: state.auth.token !== null
