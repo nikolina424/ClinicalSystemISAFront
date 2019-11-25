@@ -16,6 +16,12 @@ export const loginSuccess = (token, role) => {
     }
 }
 
+export const changePassSuccess = () => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD
+    }
+}
+
 export const register = (email, password, repeatPassword, firstName, lastName, address, city, country, phoneNumber, id, role) => {
     return dispatch => {
         const authData = {
@@ -77,3 +83,23 @@ export const login = (email, password) => {
             });
     };
 };
+
+export const changePassword = (oldPassword, newPassword, repeatPassword) => {
+    return dispatch => {
+        const pass = {
+            old: oldPassword,
+            new: newPassword
+        }
+
+        const url = '/changePassword';
+        if (newPassword === repeatPassword) {
+            axios.put(url, pass) 
+                .then(response => {
+                    dispatch(changePassSuccess());
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }
+}

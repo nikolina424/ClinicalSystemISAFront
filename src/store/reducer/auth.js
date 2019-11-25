@@ -17,12 +17,18 @@ const userLogin = (state, action) => {
     });
 }
 
+const userChangedPassword = (state, action) => {
+    return updateObject(state);
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.SIGN_UP:
             return userRegister(state, action);
         case actionTypes.LOG_IN:
             return userLogin(state, action);
+        case actionTypes.CHANGE_PASSWORD:
+            return userChangedPassword(state, action);
         default:
             return state;
     }

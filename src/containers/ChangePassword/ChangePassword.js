@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
 import classes from './ChangePassword.css';
 import {updateObject} from '../../shared/utility';
 
@@ -10,6 +12,12 @@ class ChangePassword extends Component {
             new: '',
             newRepeat: ''
         }
+    }
+
+    changePassHandler = (event) => {
+        event.preventDefault();
+        this.props.onChangePassword(this.state.auth.old, this.state.auth.new, this.state.auth.newRepeat);
+        this.props.history.push('/');
     }
 
     inputChangeHandler = (event, type) => {
@@ -30,11 +38,17 @@ class ChangePassword extends Component {
                 <input type="password" className={classes.Input} 
                     onChange={(event) => this.inputChangeHandler(event, 'newRepeat')} />
                 <button className={classes.Button} 
-                    onClick={(event) => {this.loginHandler(event)}}
+                    onClick={(event) => {this.changePassHandler(event)}}
                 >Save</button>
             </div>
         );
     }
 }
 
-export default ChangePassword;
+const mapDispatchToProps = dispatch => {
+    return {
+        onChangePassword: (oldP, newP, repeat) => dispatch(actions.changePassword(oldP, newP, repeat))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ChangePassword);

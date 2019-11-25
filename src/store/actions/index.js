@@ -5,5 +5,6 @@ export {
 
 export {
     register,
-    login
+    login,
+    changePassword
 } from './auth';
