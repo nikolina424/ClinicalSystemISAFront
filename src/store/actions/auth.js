@@ -2,19 +2,17 @@ import * as actionTypes from '../actions/actionTypes';
 import axios from '../../axios-objects';
 import jwt_decode from 'jwt-decode';
 
-export const registerSuccess = (token, userId) => {
+export const registerSuccess = () => {
     return {
-        type: actionTypes.SIGN_UP,
-        userToken: token,
-        userId: userId
+        type: actionTypes.SIGN_UP
     }
 }
 
-export const loginSuccess = (token, userId) => {
+export const loginSuccess = (token, role) => {
     return {
         type: actionTypes.LOG_IN,
         userToken: token,
-        userId: userId
+        userRole: role
     }
 }
 
@@ -45,7 +43,7 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
                 // sessionStorage.setItem('token', response.data.idToken);
                 // sessionStorage.setItem('expirationDate', expirationDate);
                 // sessionStorage.setItem('userId', response.data.localId);
-                dispatch(registerSuccess(response.data.idToken, response.data.localId));
+                dispatch(registerSuccess());
             })
             .catch(err => {
                 console.log(err);
@@ -65,14 +63,14 @@ export const login = (email, password) => {
 
         axios.post(url, user)
             .then(response => {
-                console.log("Login response");
-                console.log(response);
+                // console.log("Login response");
+                // console.log(response);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 sessionStorage.setItem('token', response.data.accessToken);
                 const jwtToken = jwt_decode(response.data.accessToken);
                 sessionStorage.setItem('role', jwtToken.role);
                 sessionStorage.setItem('expirationDate', expirationDate);
-                dispatch(loginSuccess(response.data.idToken, response.data.localId));
+                dispatch(loginSuccess(response.data.accessToken, jwtToken.role));
             })
             .catch(err => {
                 console.log(err);

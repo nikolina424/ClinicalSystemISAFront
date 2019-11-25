@@ -3,20 +3,17 @@ import {updateObject} from '../../shared/utility';
 
 const initialState = {
     token: null,
-    userId: null
+    role: null
 }
 
 const userRegister = (state, action) => {
-    return updateObject(state, {
-        token: action.userToken,
-        userId: action.userId
-    });
+    return updateObject(state);
 };
 
 const userLogin = (state, action) => {
     return updateObject(state, {
         token: action.userToken,
-        userId: action.userId
+        role: action.userRole
     });
 }
 
