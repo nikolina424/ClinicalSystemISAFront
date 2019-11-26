@@ -5,3 +5,4 @@ export const ADDED_OBJECT = 'ADDED_OBJECT';
 export const GET_OBJECTS = 'GET_OBJECTS';
 export const SIGN_UP = 'SIGN_UP';
 export const LOG_IN = 'LOG_IN';
+export const CHANGE_PASSWORD = 'CHANGE_PASSOWRD';

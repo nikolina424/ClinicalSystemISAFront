@@ -16,7 +16,10 @@ class Login extends Component {
     loginHandler = (event) => {
         event.preventDefault();
         this.props.onLogin(this.state.auth.email, this.state.auth.password);
-        this.props.history.push("/");
+        if (this.props.firstTimeLogged)
+            this.props.history.push("/changePassword");
+        else
+            this.props.history.push("/");
     }
 
     inputChangeHandler = (event, type) => {
@@ -42,10 +45,16 @@ class Login extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        firstTimeLogged: state.auth.firstTimeLogged
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return {
         onLogin: (email, password) => dispatch(actions.login(email, password))
     }
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
