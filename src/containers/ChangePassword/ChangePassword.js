@@ -8,15 +8,15 @@ class ChangePassword extends Component {
 
     state = {
         auth: {
-            old: '',
-            new: '',
-            newRepeat: ''
+            oldPass: '',
+            newPass: '',
+            newRepeatPass: ''
         }
     }
 
     changePassHandler = (event) => {
         event.preventDefault();
-        this.props.onChangePassword(this.state.auth.old, this.state.auth.new, this.state.auth.newRepeat);
+        this.props.onChangePassword(this.state.auth.oldPass, this.state.auth.newPass, this.state.auth.newRepeatPass);
         this.props.history.push('/');
     }
 
@@ -32,11 +32,11 @@ class ChangePassword extends Component {
         return (
             <div>
                 <input type="password" className={classes.Input} 
-                    onChange={(event) => this.inputChangeHandler(event, 'old')} />
+                    onChange={(event) => this.inputChangeHandler(event, 'oldPass')} />
                 <input type="password" className={classes.Input} 
-                    onChange={(event) => this.inputChangeHandler(event, 'new')} />
+                    onChange={(event) => this.inputChangeHandler(event, 'newPass')} />
                 <input type="password" className={classes.Input} 
-                    onChange={(event) => this.inputChangeHandler(event, 'newRepeat')} />
+                    onChange={(event) => this.inputChangeHandler(event, 'newRepeatPass')} />
                 <button className={classes.Button} 
                     onClick={(event) => {this.changePassHandler(event)}}
                 >Save</button>
@@ -47,7 +47,7 @@ class ChangePassword extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onChangePassword: (oldP, newP, repeat) => dispatch(actions.changePassword(oldP, newP, repeat))
+        onChangePassword: (oldPass, newPass, newRepeatPass) => dispatch(actions.changePassword(oldPass, newPass, newRepeatPass))
     }
 }
 

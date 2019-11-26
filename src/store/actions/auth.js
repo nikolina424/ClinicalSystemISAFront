@@ -8,11 +8,12 @@ export const registerSuccess = () => {
     }
 }
 
-export const loginSuccess = (token, role) => {
+export const loginSuccess = (token, role, firstTimeLogged) => {
     return {
         type: actionTypes.LOG_IN,
         userToken: token,
-        userRole: role
+        userRole: role,
+        firstTimeLogged: firstTimeLogged
     }
 }
 
@@ -69,14 +70,13 @@ export const login = (email, password) => {
 
         axios.post(url, user)
             .then(response => {
-                // console.log("Login response");
-                // console.log(response);
                 const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
                 sessionStorage.setItem('token', response.data.accessToken);
                 const jwtToken = jwt_decode(response.data.accessToken);
+                sessionStorage.setItem('firstTimeLogged', response.data.firstTimeLogged);
                 sessionStorage.setItem('role', jwtToken.role);
                 sessionStorage.setItem('expirationDate', expirationDate);
-                dispatch(loginSuccess(response.data.accessToken, jwtToken.role));
+                dispatch(loginSuccess(response.data.accessToken, jwtToken.role, response.data.firstTimeLogged));
             })
             .catch(err => {
                 console.log(err);
@@ -84,17 +84,24 @@ export const login = (email, password) => {
     };
 };
 
-export const changePassword = (oldPassword, newPassword, repeatPassword) => {
+export const changePassword = (oldPass, newPass, newRepeatPass) => {
     return dispatch => {
+        const token = sessionStorage.getItem('token');
         const pass = {
-            old: oldPassword,
-            new: newPassword
+            oldPass: oldPass,
+            newPass: newPass,
+            newRepeatPass: newRepeatPass
         }
 
         const url = '/changePassword';
-        if (newPassword === repeatPassword) {
-            axios.put(url, pass) 
+        if (newPass === newRepeatPass) {
+            axios.put(url, pass, { 
+                headers : {
+                    'Authorization' : 'Bearer ' + token
+                } 
+            }) 
                 .then(response => {
+                    console.log(response);
                     dispatch(changePassSuccess());
                 })
                 .catch(err => {
