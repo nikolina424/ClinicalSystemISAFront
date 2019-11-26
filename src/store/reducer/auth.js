@@ -3,7 +3,8 @@ import {updateObject} from '../../shared/utility';
 
 const initialState = {
     token: null,
-    role: null
+    role: null,
+    firstTimeLogged: true
 }
 
 const userRegister = (state, action) => {
@@ -13,12 +14,15 @@ const userRegister = (state, action) => {
 const userLogin = (state, action) => {
     return updateObject(state, {
         token: action.userToken,
-        role: action.userRole
+        role: action.userRole,
+        firstTimeLogged: action.firstTimeLogged
     });
 }
 
 const userChangedPassword = (state, action) => {
-    return updateObject(state);
+    return updateObject(state, {
+        firstTimeLogged: false
+    });
 }
 
 const reducer = (state = initialState, action) => {
