@@ -15,11 +15,26 @@ class Login extends Component {
 
     loginHandler = (event) => {
         event.preventDefault();
-        this.props.onLogin(this.state.auth.email, this.state.auth.password);
-        if (this.props.firstTimeLogged)
-            this.props.history.push("/changePassword");
-        else
-            this.props.history.push("/");
+        const getDataPromise = () => new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(this.props.onLogin(this.state.auth.email, this.state.auth.password));
+            }, 300);
+        });
+
+        const processDataAsycn = async () => {
+            let data = await getDataPromise();
+            data = await getDataPromise(data);
+            return data;
+        };
+
+        processDataAsycn().then((data) => {
+            if (sessionStorage.getItem('firstTimeLogged'))
+                this.props.history.push("/changePassword");
+            else
+                this.props.history.push("/");
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     inputChangeHandler = (event, type) => {
@@ -47,9 +62,9 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        firstTimeLogged: state.auth.firstTimeLogged
-    }
-}
+        firstTime: state.auth.firstTimeLogged
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {

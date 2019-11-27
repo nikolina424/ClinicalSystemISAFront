@@ -8,12 +8,11 @@ export const registerSuccess = () => {
     }
 }
 
-export const loginSuccess = (token, role, firstTimeLogged) => {
+export const loginSuccess = (token, role) => {
     return {
         type: actionTypes.LOG_IN,
         userToken: token,
-        userRole: role,
-        firstTimeLogged: firstTimeLogged
+        userRole: role
     }
 }
 
@@ -39,7 +38,6 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
             role: role.toUpperCase(),
             returnSecureToken: true
         };
-        //const url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyC93NeXpBVN_En7EAvqghEZU63moggPykU';
         const url = '/register';        
         
         if (password === repeatPassword) {
@@ -65,7 +63,6 @@ export const login = (email, password) => {
             email: email,
             password: password
         };
-        //const url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyC93NeXpBVN_En7EAvqghEZU63moggPykU';
         const url = '/login';
 
         axios.post(url, user)
@@ -76,7 +73,7 @@ export const login = (email, password) => {
                 sessionStorage.setItem('firstTimeLogged', response.data.firstTimeLogged);
                 sessionStorage.setItem('role', jwtToken.role);
                 sessionStorage.setItem('expirationDate', expirationDate);
-                dispatch(loginSuccess(response.data.accessToken, jwtToken.role, response.data.firstTimeLogged));
+                dispatch(loginSuccess(response.data.accessToken, jwtToken.role));
             })
             .catch(err => {
                 console.log(err);
