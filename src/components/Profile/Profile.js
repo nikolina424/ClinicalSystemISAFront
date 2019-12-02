@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import classes from './Profile.css';
 import Calendar from 'react-calendar';
 import {updateObject} from '../../shared/utility';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
+import {Redirect} from 'react-router-dom';
 
 class Profile extends Component {
 
@@ -40,6 +43,28 @@ class Profile extends Component {
         this.setState({surgery: updatedObject});
     }
 
+    scheduleSurgery = (event) => {
+        event.preventDefault();
+        const getDataPromise = () => new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(this.props.schedule(this.state.surgery.desc, this.state.surgery.date, this.state.surgery.duration));
+            }, 300);
+        });
+
+        const processDataAsycn = async () => {
+            let data = await getDataPromise();
+            data = await getDataPromise(data);
+            return data;
+        };
+
+        processDataAsycn().then((data) => {
+            if (this.props.scheduled)
+                this.props.history.push("/");
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
     render() {
         return (
             <div>
@@ -50,11 +75,25 @@ class Profile extends Component {
                     onChange={(event) => this.inputChangeHandler(event, 'duration')}
                     placeholder="Durations in hours"/>
                 <Calendar className={classes.Calendar} onChange={this.onChange}/>
-                <button className={classes.Button}>Schedule surgery</button>
+                <button className={classes.Button} 
+                    onClick={(event) => this.scheduleSurgery(event)}>Schedule surgery</button>
+                {!this.props.schedule ? <Redirect to="/" /> : null}
             </div>
         );
     }
 
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+    return {
+        scheduled: state.schedule.scheduledSurgery == false
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        schedule: (desc, date, time) => dispatch(actions.addSurgery(desc, date, time))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
