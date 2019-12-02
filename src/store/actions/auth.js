@@ -86,7 +86,7 @@ export const changePassword = (oldPass, newPass, newRepeatPass) => {
         }
 
         const url = '/changePassword';
-        if (newPass === newRepeatPass) {
+        if (newPass === newRepeatPass && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC')) {
             axios.put(url, pass, { 
                 headers : {
                     'Authorization' : 'Bearer ' + token

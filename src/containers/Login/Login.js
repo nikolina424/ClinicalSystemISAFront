@@ -23,12 +23,11 @@ class Login extends Component {
 
         const processDataAsycn = async () => {
             let data = await getDataPromise();
-            data = await getDataPromise(data);
             return data;
         };
 
         processDataAsycn().then((data) => {
-            if (sessionStorage.getItem('firstTimeLogged'))
+            if (sessionStorage.getItem('firstTimeLogged') && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC'))
                 this.props.history.push("/changePassword");
             else
                 this.props.history.push("/");
