@@ -1,7 +1,6 @@
 export {
-    addObject,
-    fetchObjects
-} from './object';
+    addSurgery
+} from './schedule';
 
 export {
     register,

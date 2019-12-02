@@ -23,18 +23,17 @@ class Login extends Component {
 
         const processDataAsycn = async () => {
             let data = await getDataPromise();
-            data = await getDataPromise(data);
             return data;
         };
 
         processDataAsycn().then((data) => {
-            if (sessionStorage.getItem('firstTimeLogged'))
+            if (sessionStorage.getItem('firstTimeLogged') && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC'))
                 this.props.history.push("/changePassword");
             else
                 this.props.history.push("/");
         }).catch(err => {
             console.log(err);
-        })
+        });
     }
 
     inputChangeHandler = (event, type) => {
@@ -53,7 +52,7 @@ class Login extends Component {
                 <input type="password" className={classes.Input} 
                     onChange={(event) => this.inputChangeHandler(event, 'password')} />
                 <button className={classes.Button} 
-                    onClick={(event) => {this.loginHandler(event)}}
+                    onClick={(event) => this.loginHandler(event)}
                 >Log in</button>
             </div>
         );
@@ -69,7 +68,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogin: (email, password) => dispatch(actions.login(email, password))
-    }
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

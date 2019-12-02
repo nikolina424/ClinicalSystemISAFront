@@ -43,11 +43,6 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
         if (password === repeatPassword) {
             axios.post(url, authData)
             .then(response => {
-                console.log("Register response: " + response);
-                //const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-                // sessionStorage.setItem('token', response.data.idToken);
-                // sessionStorage.setItem('expirationDate', expirationDate);
-                // sessionStorage.setItem('userId', response.data.localId);
                 dispatch(registerSuccess());
             })
             .catch(err => {
@@ -91,7 +86,7 @@ export const changePassword = (oldPass, newPass, newRepeatPass) => {
         }
 
         const url = '/changePassword';
-        if (newPass === newRepeatPass) {
+        if (newPass === newRepeatPass && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC')) {
             axios.put(url, pass, { 
                 headers : {
                     'Authorization' : 'Bearer ' + token
