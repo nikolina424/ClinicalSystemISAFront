@@ -16,15 +16,20 @@ export const addedSurgery = () => {
 export const addSurgery = (description, date, duration) => {
     return dispatch => {
         dispatch(scheduleStart());
-        
+
+        const token = sessionStorage.getItem('token');
         const surgery = {
-            desc: description,
-            date: date,
+            description: description,
+            dateTime: date,
             duration: duration
         };
         const url = "/scheduleSurgery";
 
-        axios.post(url, surgery)
+        axios.post(url, surgery, { 
+            headers : {
+                'Authorization' : 'Bearer ' + token
+            } 
+        })
             .then(response => {
                 console.log(response);
                 dispatch(addedSurgery());
