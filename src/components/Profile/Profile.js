@@ -16,10 +16,6 @@ class Profile extends Component {
         }
     }
 
-    componentDidUpdate() {
-        console.log(this.state.surgery);
-    }
-
     formatDate = (string) => {
         var options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(string).toLocaleDateString([],options);
@@ -53,7 +49,6 @@ class Profile extends Component {
 
         const processDataAsycn = async () => {
             let data = await getDataPromise();
-            data = await getDataPromise(data);
             return data;
         };
 
