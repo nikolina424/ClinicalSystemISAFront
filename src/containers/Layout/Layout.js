@@ -9,30 +9,6 @@ import * as actions from '../../store/actions/index';
 
 class Layout extends Component {
 
-    state = {
-        object: {
-            name: '',
-            title: ''
-        }
-    }
-
-    objectHandler = (event) => {
-        event.preventDefault();
-
-        const data = {
-            ...this.state.object
-        }
-        
-        this.props.onAddObject(data);
-    }
-
-    inputChangehandler = (event, type) => {
-        let updatedObject = updateObject(this.state.object, {
-            [type]: event.target.value});
-
-        this.setState({object: updatedObject});
-    }
-
     pageHandler = (page) => {
         this.props.history.push(page);
     }
@@ -69,8 +45,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAddObject: (data) => dispatch(actions.addObject(data))
+        
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout, axios);
+export default connect(mapStateToProps)(Layout, axios);
