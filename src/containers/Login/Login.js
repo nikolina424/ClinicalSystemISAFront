@@ -34,7 +34,7 @@ class Login extends Component {
                 this.props.history.push("/");
         }).catch(err => {
             console.log(err);
-        })
+        });
     }
 
     inputChangeHandler = (event, type) => {
@@ -53,7 +53,7 @@ class Login extends Component {
                 <input type="password" className={classes.Input} 
                     onChange={(event) => this.inputChangeHandler(event, 'password')} />
                 <button className={classes.Button} 
-                    onClick={(event) => {this.loginHandler(event)}}
+                    onClick={(event) => this.loginHandler(event)}
                 >Log in</button>
             </div>
         );
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return {
         onLogin: (email, password) => dispatch(actions.login(email, password))
-    }
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

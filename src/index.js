@@ -8,13 +8,13 @@ import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import objectReducer from './store/reducer/object';
+import scheduleReducer from './store/reducer/schedule';
 import authReducer from './store/reducer/auth';
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const rootReducer = combineReducers({
-    object: objectReducer,
+    schedule: scheduleReducer,
     auth: authReducer
 });
 

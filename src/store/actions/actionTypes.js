@@ -1,8 +1,5 @@
-export const INIT_OBJECT = 'INIT_OBJECT';
-export const INIT_ADD = 'INIT_ADD';
-export const ADD_OBJECT = 'ADD_OBJECT';
-export const ADDED_OBJECT = 'ADDED_OBJECT';
-export const GET_OBJECTS = 'GET_OBJECTS';
+export const SCHEDULE_START = 'SCHEDULE_START';
+export const ADD_SURGERY = 'ADD_SURGERY';
 export const SIGN_UP = 'SIGN_UP';
 export const LOG_IN = 'LOG_IN';
 export const CHANGE_PASSWORD = 'CHANGE_PASSOWRD';
