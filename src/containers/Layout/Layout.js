@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
 import classes from './Layout.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
-import {updateObject} from '../../shared/utility';
-import * as actions from '../../store/actions/index';
 
 class Layout extends Component {
 
@@ -38,12 +35,6 @@ class Layout extends Component {
 const mapStateToProps = (state) => {
     return {
         logged: state.auth.token !== null
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        
     };
 };
 
