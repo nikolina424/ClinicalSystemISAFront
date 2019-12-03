@@ -1,5 +1,6 @@
 export {
-    addSurgery
+    addSurgery,
+    addExamination
 } from './schedule';
 
 export {
