@@ -53,7 +53,7 @@ export const addExamination = (description, date, duration) => {
         const token = sessionStorage.getItem('token');
         const examination = {
             description: description,
-            date: date,
+            dateTime: date,
             duration: duration
         };
         const url = "/scheduleExamination";

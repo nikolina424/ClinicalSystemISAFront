@@ -99,7 +99,7 @@ class Profile extends Component {
         event.preventDefault();
         const getDataPromise = () => new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(this.props.scheduleEx(this.state.surgery.desc, this.state.surgery.date, this.state.surgery.duration));
+                resolve(this.props.scheduleEx(this.state.examination.desc, this.state.examination.date, this.state.examination.duration));
             }, 300);
         });
 
