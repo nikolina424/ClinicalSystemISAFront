@@ -13,6 +13,12 @@ export const addedSurgery = () => {
     };
 };
 
+export const addedExamination = () => {
+    return {
+        type: actionTypes.ADD_EXAMINATION
+    };
+};
+
 export const addSurgery = (description, date, duration) => {
     return dispatch => {
         dispatch(scheduleStart());
@@ -33,6 +39,33 @@ export const addSurgery = (description, date, duration) => {
             .then(response => {
                 console.log(response);
                 dispatch(addedSurgery());
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+};
+
+export const addExamination = (description, date, duration) => {
+    return dispatch => {
+        dispatch(scheduleStart());
+
+        const token = sessionStorage.getItem('token');
+        const examination = {
+            description: description,
+            dateTime: date,
+            duration: duration
+        };
+        const url = "/scheduleExamination";
+
+        axios.post(url, examination, {
+            headers: {
+                'Authorization' : 'Bearer ' + token
+            }
+        })
+            .then(response => {
+                console.log(response);
+                dispatch(addedExamination());
             })
             .catch(error => {
                 console.log(error);
