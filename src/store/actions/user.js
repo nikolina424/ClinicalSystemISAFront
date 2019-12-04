@@ -17,7 +17,7 @@ export const getPatients = () => {
 
             axios.get(url, {
                 headers: {
-                    'Authorization': 'Bearer' + token
+                    'Authorization': 'Bearer ' + token
                 }
             })
                 .then(response => {
