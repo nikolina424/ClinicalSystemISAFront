@@ -8,3 +8,7 @@ export {
     login,
     changePassword
 } from './auth';
+
+export {
+    getPatients
+} from './user';

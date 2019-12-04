@@ -18,7 +18,7 @@ class Login extends Component {
         const getDataPromise = () => new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(this.props.onLogin(this.state.auth.email, this.state.auth.password));
-            }, 300);
+            }, 50);
         });
 
         const processDataAsycn = async () => {

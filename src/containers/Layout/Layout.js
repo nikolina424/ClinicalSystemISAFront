@@ -13,6 +13,7 @@ class Layout extends Component {
         let profileButton = null;
         let regButton = null;
         let logButton = null;
+        let patientListButton = null;
 
         if (sessionStorage.getItem('token') != null || this.props.logged)
             profileButton = (<button className={classes.Button} onClick={() => this.pageHandler("/profile")}>Profile</button>);
@@ -22,9 +23,14 @@ class Layout extends Component {
             logButton = (<button className={classes.Button} onClick={() => this.pageHandler("/login")}>Login</button>);
         }
 
+        if (sessionStorage.getItem('token') != null && sessionStorage.getItem('role') === 'DOCTOR') {
+            patientListButton = (<button className={classes.Button} onClick={() => this.pageHandler("/patientList")}>Patients</button>);
+        }
+
         return (
             <Auxiliary>
                 {profileButton}
+                {patientListButton}
                 {logButton}
                 {regButton}
             </Auxiliary>
