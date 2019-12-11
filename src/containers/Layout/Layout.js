@@ -33,6 +33,7 @@ class Layout extends Component {
                 {patientListButton}
                 {logButton}
                 {regButton}
+                {sessionStorage.getItem('token') !== null ? <button className={classes.Button} onClick={() => this.pageHandler("/profile")}>Profile</button> : null};
             </Auxiliary>
         );
     }

@@ -6,6 +6,7 @@ import Login from './containers/Login/Login';
 import ChangePassword from './containers/ChangePassword/ChangePassword';
 import Schedule from './components/Doctor/Schedule/Schedule';
 import PatientList from './components/Doctor/PatientList/PatientList';
+import Profile from './components/Profile/Profile';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
           <Route path="/changePassword" component={ChangePassword} />
           <Route path="/schedule" component={Schedule} />
           <Route path="/patientList" component={PatientList} />
+          <Route path="/profile" component={Profile} />
         </Switch>
       </div>
     );
