@@ -4,7 +4,7 @@ import {Switch, Route} from 'react-router-dom';
 import Register from './containers/Register/Register';
 import Login from './containers/Login/Login';
 import ChangePassword from './containers/ChangePassword/ChangePassword';
-import Profile from './components/Profile/Profile';
+import Schedule from './components/Doctor/Schedule/Schedule';
 import PatientList from './components/Doctor/PatientList/PatientList';
 
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/changePassword" component={ChangePassword} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/schedule" component={Schedule} />
           <Route path="/patientList" component={PatientList} />
         </Switch>
       </div>
