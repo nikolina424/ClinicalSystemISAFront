@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import classes from './Profile.css';
+import classes from './Schedule.css';
 import Calendar from 'react-calendar';
-import {updateObject} from '../../shared/utility';
+import {updateObject} from '../../../shared/utility';
 import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
-import Auxiliary from './../../hoc/Auxiliary/Auxiliary';
+import * as actions from '../../../store/actions/index';
+import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 
-class Profile extends Component {
+class Schedule extends Component {
 
     state = {
         openScheduleSurgery: false,
@@ -183,4 +183,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Schedule);
