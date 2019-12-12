@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import classes from './Login.css';
 import * as actions from '../../store/actions/index';
 import {updateObject} from '../../shared/utility';
+import classes from '../../bootstrap/bootstrap.css';
+import classNames from 'classnames/bind';
 
 class Login extends Component {
 
@@ -46,16 +47,23 @@ class Login extends Component {
     }
 
     render() {
+        var liClasses = classNames({
+            [classes.btn]: true,
+            [classes.btnLg]: true,
+            [classes.btnPrimary]: true,
+            [classes.btnBlock] : true
+        });
+
         return (
-            <div>
-                <input type="email" className={classes.Input} 
+            <form className={classes.formSignin}>
+                <input type="email" className={classes.formControl}
                     onChange={(event) => this.inputChangeHandler(event, 'email')} />
-                <input type="password" className={classes.Input} 
+                <input type="password" className={classes.formControl}
                     onChange={(event) => this.inputChangeHandler(event, 'password')} />
-                <button className={classes.Button} 
+                <button className={liClasses} 
                     onClick={(event) => this.loginHandler(event)}
                 >Log in</button>
-            </div>
+            </form>
         );
     }
 }
