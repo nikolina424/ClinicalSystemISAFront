@@ -1,43 +1,25 @@
 .Input {
     box-sizing: border-box;
-    box-shadow: 2px;
-    outline: coral;
-    width: 100px;
-    padding: 5px;
+    border-radius: 5px;
+    width: 190px;
+    height: 25px;
+    padding: 2px 2px;
+    margin: 15px auto;
+    box-shadow: darkslategrey;
     display: block;
     align-items: center;
     text-align: center;
-    margin: 20px auto;
-    color: rgb(129, 9, 9);
-    border-color: rgb(49, 87, 11);
-    width: 350px;
-    text-size-adjust: inherit;
 }
 
 .Button {
-    width: 100px;
-    height: 35px;
     display: block;
-    border: 2px;
-    color: darkred;
-    align-items: center;
-    text-align: center;
-    margin: 15px auto;
-    border-radius: 5px;
-    background-color: darkturquoise;
-    cursor: pointer;
+    margin: 10px auto;
+    padding: 5px;
+    background-color: firebrick;
+    color: cornsilk;
 }
 
-.Button:hover,
-.Button:active {
-    background-color: forestgreen;
-    outline: 2px;
-    color: chocolate;
-}
-
-.Calendar {
-    width: 50%;
-    text-align: center;
-    align-items: center;
-    margin: auto;
+.Button:active,
+.Button:hover {
+    color: darkgoldenrod;
 }

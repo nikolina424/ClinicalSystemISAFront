@@ -10,13 +10,13 @@ class Layout extends Component {
     }
 
     render() {
-        let profileButton = null;
+        let scheduleButton = null;
         let regButton = null;
         let logButton = null;
         let patientListButton = null;
 
         if (sessionStorage.getItem('token') != null || this.props.logged)
-            profileButton = (<button className={classes.Button} onClick={() => this.pageHandler("/profile")}>Profile</button>);
+        scheduleButton = (<button className={classes.Button} onClick={() => this.pageHandler("/schedule")}>Schedule</button>);
 
         if (sessionStorage.getItem('token') == null && !this.props.logged) {
             regButton = (<button className={classes.Button} onClick={() => this.pageHandler("/register")}>Register</button>);
@@ -29,10 +29,11 @@ class Layout extends Component {
 
         return (
             <Auxiliary>
-                {profileButton}
+                {scheduleButton}
                 {patientListButton}
                 {logButton}
                 {regButton}
+                {sessionStorage.getItem('token') !== null ? <button className={classes.Button} onClick={() => this.pageHandler("/profile")}>Profile</button> : null};
             </Auxiliary>
         );
     }
