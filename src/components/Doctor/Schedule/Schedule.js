@@ -1,30 +1,35 @@
-import React, {Component} from 'react';
+import React from 'react';
 import classes from './Schedule.css';
 import Calendar from 'react-calendar';
 import {updateObject} from '../../../shared/utility';
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
+import axios from '../../../axios-objects';
 
-class Schedule extends Component {
+class Schedule extends React.PureComponent {
 
-    state = {
-        openScheduleSurgery: false,
-        openScheduleExamination: false,
-        surgery: {
-            desc: '',
-            duration: null,
-            date: ''
-        },
-        examination: {
-            desc: '',
-            duration: null,
-            date: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            openScheduleSurgery: false,
+            openScheduleExamination: false,
+            surgery: {
+                description: '',
+                duration: null,
+                dateTime: ''
+            },
+            examination: {
+                desc: '',
+                duration: null,
+                date: ''
+            }
         }
     }
 
     formatDate = (string) => {
-        var options = { year: 'numeric', month: 'numeric', day: 'numeric' };
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
         return new Date(string).toLocaleDateString([],options);
     }
 
@@ -45,31 +50,34 @@ class Schedule extends Component {
         const splitDate = this.formatDate(date).split("/");
         const newDate = splitDate[2] + "-" + splitDate[0] + "-" + splitDate[1];
         let updatedObject = updateObject(this.state.surgery, {
-            date: newDate
+            dateTime: newDate
         });
 
         this.setState({surgery: updatedObject});
     }
 
-    scheduleSurgery = (event) => {
+    scheduleSurgery = async (event) => {
         event.preventDefault();
-        const getDataPromise = () => new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this.props.scheduleSurg(this.state.surgery.desc, this.state.surgery.date, this.state.surgery.duration));
-            }, 300);
-        });
-
-        const processDataAsycn = async () => {
-            let data = await getDataPromise();
-            return data;
+        const { description, duration, dateTime } = this.state.surgery;
+        const surg = {
+            description,
+            duration,
+            dateTime
         };
+        const token = sessionStorage.getItem('token');
 
-        processDataAsycn().then((data) => {
-            if (this.props.scheduledSurg)
-                this.setState({openScheduleSurgery: false});
-        }).catch(err => {
+        try {
+            const response = await axios.post('/scheduleSurgery', surg, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if (response) {
+                window.location.reload();
+            }
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 
     openScheduleExamination = (event) => {
@@ -116,23 +124,29 @@ class Schedule extends Component {
         });
     }
 
-    render() {
-        const surgeryButton = (
+    renderSurgeryButton = () => {
+        return (
             <Auxiliary>
                 <button className={classes.Button}
                     onClick={(event) => this.openScheduleSurgery(event)}>Schedule Surgery</button>
             </Auxiliary>
         );
-        const examinationButton = (
+    }
+
+    renderExaminationButton = () => {
+        return (
             <Auxiliary>
                 <button className={classes.Button}
                     onClick={(event) => this.openScheduleExamination(event)}>Schedule Examination</button>
             </Auxiliary>
         );
-        const surgeryDiv = (
+    }
+
+    renderSurgeryDiv = () => {
+        return (
             <Auxiliary>
                 <input className={classes.Input} type="text" 
-                    onChange={(event) => this.inputChangeHandler(event, 'desc')}
+                    onChange={(event) => this.inputChangeHandler(event, 'description')}
                     placeholder="Description"/>
                 <input className={classes.Input} type="number" 
                     onChange={(event) => this.inputChangeHandler(event, 'duration')}
@@ -142,8 +156,10 @@ class Schedule extends Component {
                     onClick={(event) => this.scheduleSurgery(event)}>Done</button>
             </Auxiliary>
         );
+    }
 
-        const examinationDiv = (
+    renderExaminationDiv = () => {
+        return (
             <Auxiliary>
                 <input className={classes.Input} type="text"
                     onChange={(event) => {this.inputChangeHandlerEx(event, 'desc')}}
@@ -156,17 +172,18 @@ class Schedule extends Component {
                     onClick={(event) => this.scheduleExamination(event)}>Done</button>
             </Auxiliary>
         );
+    }
 
+    render() {
         return (
             <div>
-                {surgeryButton}
-                {this.state.openScheduleSurgery ? surgeryDiv : null}
-                {examinationButton}
-                {this.state.openScheduleExamination ? examinationDiv : null}
+                {this.renderSurgeryButton()}
+                {this.state.openScheduleSurgery ? this.renderSurgeryDiv() : null}
+                {this.renderExaminationButton()}
+                {this.state.openScheduleExamination ? this.renderExaminationDiv() : null}
             </div>
         );
     }
-
 }
 
 const mapStateToProps = (state) => {
