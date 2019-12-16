@@ -1,40 +1,52 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import classes from './Layout.css';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
+import '../../bootstrap/bootstrap.css';
 
 class Layout extends Component {
 
-    pageHandler = (page) => {
-        this.props.history.push(page);
+    logoutHandler() {
+        sessionStorage.clear();
+        window.location.reload();
     }
 
     render() {
-        let scheduleButton = null;
-        let regButton = null;
-        let logButton = null;
-        let patientListButton = null;
-
-        if (sessionStorage.getItem('token') != null || this.props.logged)
-        scheduleButton = (<button className={classes.Button} onClick={() => this.pageHandler("/schedule")}>Schedule</button>);
-
-        if (sessionStorage.getItem('token') == null && !this.props.logged) {
-            regButton = (<button className={classes.Button} onClick={() => this.pageHandler("/register")}>Register</button>);
-            logButton = (<button className={classes.Button} onClick={() => this.pageHandler("/login")}>Login</button>);
-        }
-
-        if (sessionStorage.getItem('token') != null && sessionStorage.getItem('role') === 'DOCTOR') {
-            patientListButton = (<button className={classes.Button} onClick={() => this.pageHandler("/patientList")}>Patients</button>);
-        }
+        const token = sessionStorage.getItem('token');
+        const role = sessionStorage.getItem('role');
 
         return (
-            <Auxiliary>
-                {scheduleButton}
-                {patientListButton}
-                {logButton}
-                {regButton}
-                {sessionStorage.getItem('token') !== null ? <button className={classes.Button} onClick={() => this.pageHandler("/profile")}>Profile</button> : null};
-            </Auxiliary>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+                <div className="container">
+                    <a className="navbar-brand" 
+                    href="/">Home page</a>
+                    {token === null ? 
+                        <Auxiliary>
+                            <a className="navbar-brand" 
+                            href="/login">Sign in</a>
+                            <a className="navbar-brand" 
+                            href="/register">Sign up</a>
+                        </Auxiliary>
+                    : null }
+                    {(token !== null && role === 'DOCTOR') ?
+                        <Auxiliary>
+                            <a className="navbar-brand" 
+                            href="/schedule">Schedule</a>
+                        </Auxiliary> 
+                    : null }
+                    {token !== null ? 
+                        <Auxiliary>
+                            <a className="navbar-brand" 
+                            href="/profile">Profile</a>
+                        </Auxiliary>
+                    : null }
+                    {token !== null ?
+                        <Auxiliary>
+                            <a className="navbar-brand" style={{cursor: 'pointer'}}
+                            onClick={this.logoutHandler}>Logout</a>
+                        </Auxiliary> 
+                    : null}
+                </div>
+            </nav>
         );
     }
 }
