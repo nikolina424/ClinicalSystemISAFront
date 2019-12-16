@@ -7,6 +7,7 @@ import ChangePassword from './containers/ChangePassword/ChangePassword';
 import Schedule from './components/Doctor/Schedule/Schedule';
 import PatientList from './components/Doctor/PatientList/PatientList';
 import Profile from './components/Profile/Profile';
+import ListOfClinics from './containers/ListOfClinics/ListOfClinics';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
           <Route path="/schedule" component={Schedule} />
           <Route path="/patientList" component={PatientList} />
           <Route path="/profile" component={Profile} />
+          <Route path="/listOfClinics" component={ListOfClinics}/>
         </Switch>
       </div>
     );
