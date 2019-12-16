@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import {updateObject} from '../../shared/utility';
-import classes from '../../bootstrap/bootstrap.css';
-import classNames from 'classnames/bind';
+import './Login.css';
+import axios from '../../axios-objects';
+import jwt_decode from 'jwt-decode';
 
 class Login extends Component {
 
@@ -14,56 +15,59 @@ class Login extends Component {
         }
     }
 
-    loginHandler = (event) => {
+    loginHandler = async (event) => {
         event.preventDefault();
-        const getDataPromise = () => new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this.props.onLogin(this.state.auth.email, this.state.auth.password));
-            }, 50);
-        });
-
-        const processDataAsycn = async () => {
-            let data = await getDataPromise();
-            data = await getDataPromise(data);
-            return data;
+        const { email, password } = this.state.auth;
+        const user = {
+            email,
+            password
         };
 
-        processDataAsycn().then((data) => {
-            if (sessionStorage.getItem('firstTimeLogged') === 'true' && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC'))
-                this.props.history.push("/changePassword");
-            else
-                this.props.history.push("/");
-        }).catch(err => {
+        try {
+            const response = await axios.post('/login', user);
+            if (response) {
+                const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+                sessionStorage.setItem('token', response.data.accessToken);
+                const jwtToken = jwt_decode(response.data.accessToken);
+                sessionStorage.setItem('firstTimeLogged', response.data.firstTimeLogged);
+                sessionStorage.setItem('role', jwtToken.role);
+                sessionStorage.setItem('expirationDate', expirationDate);
+                if (sessionStorage.getItem('firstTimeLogged') === 'true')
+                    this.props.history.push('/changePassword')
+                else 
+                    this.props.history.push('/');
+            }
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 
     inputChangeHandler = (event, type) => {
-        let updatedObject = updateObject(this.state.auth, {
+        let auth = updateObject(this.state.auth, {
             [type]: event.target.value
         });
 
-        this.setState({auth: updatedObject});
+        this.setState({auth});
     }
 
     render() {
-        var liClasses = classNames({
-            [classes.btn]: true,
-            [classes.btnLg]: true,
-            [classes.btnPrimary]: true,
-            [classes.btnBlock] : true
-        });
-
         return (
-            <form className={classes.formSignin}>
-                <input type="email" className={classes.formControl}
-                    onChange={(event) => this.inputChangeHandler(event, 'email')} />
-                <input type="password" className={classes.formControl}
-                    onChange={(event) => this.inputChangeHandler(event, 'password')} />
-                <button className={liClasses} 
-                    onClick={(event) => this.loginHandler(event)}
-                >Log in</button>
-            </form>
+            <div className="wrapper fadeInDown">
+                <div id="formContent">
+                    <form>
+                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="login"
+                            onChange={(event) => this.inputChangeHandler(event, 'email')}/>
+                        <input type="password" id="password" className="fadeIn third" name="login" placeholder="password"
+                            onChange={(event) => this.inputChangeHandler(event, 'password')}/>
+                        <input type="submit" className="fadeIn fourth" value="Sign in" style={{cursor: 'pointer'}}
+                            onClick={(event) => this.loginHandler(event)} />
+                    </form>
+                    <div id="formFooter">
+                        <a>Don't have an account? <p className="aRegister underlineHover" 
+                        onClick={() => this.props.history.push('/register')}>Register </p> now!</a>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

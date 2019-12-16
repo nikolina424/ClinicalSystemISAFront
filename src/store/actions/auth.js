@@ -44,6 +44,7 @@ export const register = (email, password, repeatPassword, firstName, lastName, a
             axios.post(url, authData)
             .then(response => {
                 dispatch(registerSuccess());
+                this.props.history.push("/login");
             })
             .catch(err => {
                 console.log(err);
@@ -86,7 +87,7 @@ export const changePassword = (oldPass, newPass, newRepeatPass) => {
         }
 
         const url = '/changePassword';
-        if (newPass === newRepeatPass && (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'ADMINCC')) {
+        if (newPass === newRepeatPass) {
             axios.put(url, pass, { 
                 headers : {
                     'Authorization' : 'Bearer ' + token

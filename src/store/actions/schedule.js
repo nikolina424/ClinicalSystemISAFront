@@ -64,8 +64,8 @@ export const addExamination = (description, date, duration) => {
             }
         })
             .then(response => {
-                console.log(response);
                 dispatch(addedExamination());
+                window.location.reload();
             })
             .catch(error => {
                 console.log(error);
