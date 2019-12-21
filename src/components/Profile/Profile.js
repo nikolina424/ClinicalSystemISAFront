@@ -1,24 +1,28 @@
-import React, {Component} from 'react';
+import React from 'react';
 import axios from '../../axios-objects';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import {updateObject} from '../../shared/utility';
 import './Profile.css';
 
-class Profile extends Component {
+class Profile extends React.PureComponent {
 
-    state = {
-        loggedUser: {
-            user: null
-        },
-        profile: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            phoneNumber: null,
-            userId: null,
-            address: '',
-            city: '',
-            country: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loggedUser: {
+                user: null
+            },
+            profile: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                phoneNumber: null,
+                userId: null,
+                address: '',
+                city: '',
+                country: ''
+            }
         }
     }
 
