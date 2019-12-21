@@ -2,8 +2,6 @@ import React from 'react';
 import classes from './Schedule.css';
 import Calendar from 'react-calendar';
 import {updateObject} from '../../../shared/utility';
-import {connect} from 'react-redux';
-import * as actions from '../../../store/actions/index';
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import axios from '../../../axios-objects';
 
@@ -21,9 +19,9 @@ class Schedule extends React.PureComponent {
                 dateTime: ''
             },
             examination: {
-                desc: '',
+                description: '',
                 duration: null,
-                date: ''
+                dateTime: ''
             }
         }
     }
@@ -97,31 +95,34 @@ class Schedule extends React.PureComponent {
         const splitDate = this.formatDate(date).split("/");
         const newDate = splitDate[2] + "-" + splitDate[0] + "-" + splitDate[1];
         let updatedObject = updateObject(this.state.examination, {
-            date: newDate
+            dateTime: newDate
         });
 
         this.setState({examination: updatedObject});
     }
 
-    scheduleExamination = (event) => {
+    scheduleExamination = async(event) => {
         event.preventDefault();
-        const getDataPromise = () => new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this.props.scheduleEx(this.state.examination.desc, this.state.examination.date, this.state.examination.duration));
-            }, 300);
-        });
-
-        const processDataAsycn = async () => {
-            let data = await getDataPromise();
-            return data;
+        const { description, duration, dateTime } = this.state.examination;
+        const exam = {
+            description,
+            duration,
+            dateTime
         };
+        const token = sessionStorage.getItem('token');
 
-        processDataAsycn().then((data) => {
-            if (this.props.scheduledEx)
-                this.setState({openScheduleExamination: false});
-        }).catch(err => {
+        try {
+            const response = await axios.post('/scheduleExamination', exam, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if (response) {
+                window.location.reload();
+            }
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 
     renderSurgeryButton = () => {
@@ -162,7 +163,7 @@ class Schedule extends React.PureComponent {
         return (
             <Auxiliary>
                 <input className={classes.Input} type="text"
-                    onChange={(event) => {this.inputChangeHandlerEx(event, 'desc')}}
+                    onChange={(event) => {this.inputChangeHandlerEx(event, 'description')}}
                     placeholder="Description"/>
                 <input className={classes.Input} type="number"
                     onChange={(event) => this.inputChangeHandlerEx(event, 'duration')}
@@ -186,18 +187,4 @@ class Schedule extends React.PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        scheduledSurg: state.schedule.scheduledSurgery === true,
-        scheduledEx: state.schedule.scheduledExamination === true
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        scheduleSurg: (desc, date, time) => dispatch(actions.addSurgery(desc, date, time)),
-        scheduleEx: (desc, date, time) => dispatch(actions.addExamination(desc, date, time))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Schedule);
+export default Schedule;
