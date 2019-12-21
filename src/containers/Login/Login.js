@@ -1,17 +1,19 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
+import React from 'react';
 import {updateObject} from '../../shared/utility';
 import './Login.css';
 import axios from '../../axios-objects';
 import jwt_decode from 'jwt-decode';
 
-class Login extends Component {
+class Login extends React.PureComponent {
 
-    state = {
-        auth: {
-            email: '',
-            password: ''
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            auth: {
+                email: '',
+                password: ''
+            }
         }
     }
 
@@ -72,16 +74,4 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        firstTime: state.auth.firstTimeLogged
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        onLogin: (email, password) => dispatch(actions.login(email, password))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
