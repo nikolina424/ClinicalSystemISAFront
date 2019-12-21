@@ -21,7 +21,8 @@ class Profile extends React.PureComponent {
                 userId: null,
                 address: '',
                 city: '',
-                country: ''
+                country: '',
+                image: null
             }
         }
     }
@@ -93,6 +94,34 @@ class Profile extends React.PureComponent {
         }
     }
 
+    imageHandler = async (event) => {
+        const token = sessionStorage.getItem('token');
+        const file = event.target.files[0];
+        let formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post('/addImageToUser', formData, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token,
+                    'content-type' : 'multipart/form-data'
+                }
+            });
+            if (response) {
+                const profile = updateObject(this.state.profile, {
+                    image: response.data.image
+                });
+                this.setState({profile});
+                const loggedUser = updateObject(this.state.loggedUser, {
+                    user: response.data
+                });
+                this.setState({loggedUser});
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     render() {
         const token = sessionStorage.getItem('token');
         const role = sessionStorage.getItem('role');
@@ -140,9 +169,10 @@ class Profile extends React.PureComponent {
                         <div className="row">
                             <div className="col-sm-3">
                                 <div className="text-center" style={{marginLeft: '27px', marginBottom: '30px'}}>
-                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" className="avatar img-circle img-thumbnail" alt="avatar" />
+                                    <img src={'images/' + this.state.loggedUser.user.image} className="avatar img-circle img-thumbnail" alt="img" />
                                     <h6>Upload a different photo</h6>
-                                    <input type="file" className="text-center center-block file-upload" style={{width: '100px'}} />
+                                    <input type="file" className="text-center center-block file-upload" style={{width: '100px'}}
+                                    onChange={(event) => this.imageHandler(event)} name="file"/>
                                 </div>
                             </div>
                         </div>  
