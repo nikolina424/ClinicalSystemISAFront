@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import '../../bootstrap/bootstrap.css';
 
-class Layout extends Component {
+class Layout extends React.PureComponent {
 
     logoutHandler() {
         sessionStorage.clear();
@@ -51,10 +50,4 @@ class Layout extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        logged: state.auth.token !== null
-    };
-};
-
-export default connect(mapStateToProps)(Layout);
+export default Layout;
