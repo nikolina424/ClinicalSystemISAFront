@@ -1,31 +1,31 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import * as actions from '../../../store/actions/index';
+import React from 'react';
+import axios from '../../../axios-objects';
 
-class PatientList extends Component {
+class PatientList extends React.PureComponent {
 
-    state = {
-        patients: []
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            patients: []
+        }
     }
 
-    componentDidMount() {
-        const getDataPromise = () => new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this.props.getPatients());
-            }, 50);
-        });
+    componentDidMount = async() => {
+        const token = sessionStorage.getItem('token');
 
-        const processDataAsycn = async () => {
-            let data = await getDataPromise();
-            data = await getDataPromise(data);
-            return data;
-        };
-
-        processDataAsycn().then((data) => {
-            this.setState({patients: this.props.patients});
-        }).catch(err => {
+        try {
+            const response = await axios.get('/getPatients', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            if (response) {
+                this.setState({patients: response.data});
+            }
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 
     render() {
@@ -43,16 +43,4 @@ class PatientList extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        patients: state.user.patients
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        getPatients: () => dispatch(actions.getPatients())
-    };
-};
-
-export default connect (mapStateToProps, mapDispatchToProps)(PatientList);
+export default PatientList;
