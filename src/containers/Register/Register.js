@@ -1,24 +1,26 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
+import React from 'react';
 import {updateObject} from '../../shared/utility';
 import axios from '../../axios-objects';
 
-class Register extends Component {
+class Register extends React.PureComponent {
 
-    state = {
-        auth: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            repeatPassword: '',
-            address: '',
-            city: '',
-            country: '',
-            phoneNumber: null,
-            userId: null,
-            role: 'Patient'
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            auth: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                repeatPassword: '',
+                address: '',
+                city: '',
+                country: '',
+                phoneNumber: null,
+                userId: null,
+                role: 'Patient'
+            }
         }
     }
 
@@ -107,11 +109,4 @@ class Register extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onRegister: (email, password, repeatPassword, firstName, lastName, address, city, country, phoneNumber, userId, role) => 
-            dispatch(actions.register(email, password, repeatPassword, firstName, lastName, address, city, country, phoneNumber, userId, role))
-    }
-};
-
-export default connect(null, mapDispatchToProps)(Register);
+export default Register;
