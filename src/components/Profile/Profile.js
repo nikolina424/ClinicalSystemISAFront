@@ -90,26 +90,129 @@ class Profile extends Component {
     }
 
     render() {
+        const token = sessionStorage.getItem('token');
+        const role = sessionStorage.getItem('role');
+
         return (
             <Auxiliary>
                 {this.state.loggedUser.user === null ? <p>Log in first, please.</p> :
                 <Auxiliary>
-                    <input type="text" defaultValue={this.state.loggedUser.user.firstName}
-                        onChange={(event) => this.inputChangeHandler(event, 'firstName')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.lastName} 
-                        onChange={(event) => this.inputChangeHandler(event, 'lastName')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.email} 
-                        onChange={(event) => this.inputChangeHandler(event, 'email')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.phoneNumber} 
-                        onChange={(event) => this.inputChangeHandler(event, 'phoneNumber')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.userId} 
-                        onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.city} 
-                        onChange={(event) => this.inputChangeHandler(event, 'city')}/>
-                    <input type="text" defaultValue={this.state.loggedUser.user.country} 
-                        onChange={(event) => this.inputChangeHandler(event, 'country')}/>
-                    <button onClick={this.editProfileHandler}>Save changes</button>
-                </Auxiliary>
+                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+                        <div className="container">
+                            <a className="navbar-brand" 
+                            href="/">Home page</a>
+                            {token === null ? 
+                                <Auxiliary>
+                                    <a className="navbar-brand" 
+                                    href="/login">Sign in</a>
+                                    <a className="navbar-brand" 
+                                    href="/register">Sign up</a>
+                                </Auxiliary>
+                            : null }
+                            {(token !== null && role === 'DOCTOR') ?
+                                <Auxiliary>
+                                    <a className="navbar-brand" 
+                                    href="/schedule">Schedule</a>
+                                </Auxiliary> 
+                            : null }
+                            {token !== null ? 
+                                <Auxiliary>
+                                    <a className="navbar-brand" 
+                                    href="/profile">Profile</a>
+                                </Auxiliary>
+                            : null }
+                            {token !== null ?
+                                <Auxiliary>
+                                    <a className="navbar-brand" style={{cursor: 'pointer'}}
+                                    onClick={this.logoutHandler}>Logout</a>
+                                </Auxiliary> 
+                            : null}
+                        </div>
+                    </nav>
+                    <div className="container bootstrap snippet">
+                        <div className="row">
+                        <div className="col-sm-10" style={{marginTop: '30px', marginBottom: '30px'}}><h1>{this.state.loggedUser.user.firstName} {this.state.loggedUser.user.lastName}</h1></div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-3">
+                                <div className="text-center" style={{marginLeft: '27px', marginBottom: '30px'}}>
+                                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" className="avatar img-circle img-thumbnail" alt="avatar" />
+                                    <h6>Upload a different photo</h6>
+                                    <input type="file" className="text-center center-block file-upload" style={{width: '100px'}} />
+                                </div>
+                            </div>
+                        </div>  
+                            <div className="tab-content">
+                                <div className="tab-pane active" id="home">
+                                    
+                                    <form className="form" action="##" method="post" id="registrationForm">
+                                        <div className="form-group">
+                                            
+                                            <div className="col-xs-6">
+                                                <label htmlFor="first_name" style={{width: '115px'}}><h4>First name</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.firstName}
+                                                 onChange={(event) => this.inputChangeHandler(event, 'firstName')}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            
+                                            <div className="col-xs-6">
+                                                <label htmlFor="last_name" style={{width: '115px'}}><h4>Last name</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.lastName} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'lastName')}/>
+                                            </div>
+                                        </div>
+                            
+                                        <div className="form-group">
+                                            
+                                            <div className="col-xs-6">
+                                                <label htmlFor="phone" style={{width: '115px'}}><h4>Phone</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={'+381' + this.state.loggedUser.user.phoneNumber} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'phoneNumber')}/>
+                                            </div>
+                                        </div>
+                            
+                                        <div className="form-group">
+                                            <div className="col-xs-6">
+                                                <label htmlFor="country" style={{width: '115px'}}><h4>Country</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.country} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'country')}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <div className="col-xs-6">
+                                                <label htmlFor="city" style={{width: '115px'}}><h4>City</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.city} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'city')}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <div className="col-xs-6">
+                                                <label htmlFor="email" style={{width: '115px'}}><h4>Email</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.email} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'email')}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="col-xs-6">
+                                                <label htmlFor="jmbg" style={{width: '115px'}}><h4>JMBG</h4></label>
+                                                <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.userId} 
+                                                 onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="col-xs-12">
+                                                    <br></br>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <button className="btn btn-lg btn-success" onClick={this.editProfileHandler}><i className="glyphicon glyphicon-ok-sign"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </Auxiliary>
                 }
             </Auxiliary>
         );
