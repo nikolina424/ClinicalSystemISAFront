@@ -9,6 +9,8 @@ import PatientList from './components/Doctor/PatientList/PatientList';
 import Profile from './components/Profile/Profile';
 import ListOfClinics from './containers/ListOfClinics/ListOfClinics';
 import MedicalRecord from './containers/MedicalRecord/MedicalRecord';
+import PrivateRouteLogged from './components/PrivateRoute/PrivateRouteLogged';
+import PrivateRouteDoctor from './components/PrivateRoute/PrivateRouteDoctor';
 
 class App extends Component {
   render() {
@@ -18,10 +20,10 @@ class App extends Component {
           <Route path="/" exact component={Layout} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/changePassword" component={ChangePassword} />
-          <Route path="/schedule" component={Schedule} />
-          <Route path="/patientList" component={PatientList} />
-          <Route path="/profile" component={Profile} />
+          <PrivateRouteLogged path="/changePassword" component={ChangePassword} />
+          <PrivateRouteDoctor path="/schedule" component={Schedule} />
+          <PrivateRouteDoctor path="/patientList" component={PatientList} />
+          <PrivateRouteLogged path="/profile" component={Profile} />
           <Route path="/listOfClinics" component={ListOfClinics}/>
           <Route path="/medicalRecord" component={MedicalRecord}/>
         </Switch>
