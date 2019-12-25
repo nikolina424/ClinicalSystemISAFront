@@ -57,7 +57,7 @@ class Login extends React.PureComponent {
             <div className="wrapper fadeInDown">
                 <div id="formContent">
                     <form>
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="login"
+                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="email"
                             onChange={(event) => this.inputChangeHandler(event, 'email')}/>
                         <input type="password" id="password" className="fadeIn third" name="login" placeholder="password"
                             onChange={(event) => this.inputChangeHandler(event, 'password')}/>
