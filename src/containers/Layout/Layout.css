@@ -6,6 +6,10 @@
     align-items: center;
 }
 
+.containerC .clinic {
+    width: 100%;
+    height: auto;
+}
 
 .doctor {
     position: absolute;
@@ -14,10 +18,7 @@
     left: 10px;
 }
 
-
 .p {
-
-   
     width: 30vw;
     font-size: 2.5vw;
     text-align: center;
@@ -25,10 +26,7 @@
     left: 60vw;
     top: 7vw;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    
 }
-
-
 
 .Input {
     box-sizing: border-box;
@@ -67,3 +65,31 @@
     color: chocolate;
 }
 
+.containerC {
+    position: relative;
+    width: 100%;
+    max-width: 2500px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  
+.containerC .contentC {
+    font-size: large;
+    font-family: cursive;
+    position: absolute;
+    top: 0px;
+    padding-right: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #000000;
+    width: 100vw;
+    height: 15vw;
+  }
+
+.contentC .welcome {
+    margin-top: 8vw;
+    margin-left: 18vw;
+}
+
+.contentC .text {
+    margin-left: 18vw;
+}
