@@ -6,6 +6,30 @@
     align-items: center;
 }
 
+
+.doctor {
+    position: absolute;
+    width: 80%;
+    top: 60px;
+    left: 10px;
+}
+
+
+.p {
+
+   
+    width: 30vw;
+    font-size: 2.5vw;
+    text-align: center;
+    position: absolute;
+    left: 60vw;
+    top: 7vw;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+}
+
+
+
 .Input {
     box-sizing: border-box;
     box-shadow: 2px;
@@ -42,3 +66,4 @@
     outline: 2px;
     color: chocolate;
 }
+
