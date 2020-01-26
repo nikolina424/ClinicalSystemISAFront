@@ -32,6 +32,12 @@ class Navigation extends React.PureComponent {
                                     href="/schedule">Schedule</a>
                                 </Auxiliary> 
                             : null }
+                            {(token !== null && role === 'ADMINCC') ?
+                                <Auxiliary>
+                                    <a className="navbar-brand"
+                                    href="/adminPage">Requests</a>
+                                </Auxiliary>
+                            : null }
                             {token !== null ? 
                                 <Auxiliary>
                                     <a className="navbar-brand" 
