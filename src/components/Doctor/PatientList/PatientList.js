@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from '../../../axios-objects';
+import Navigation from '../../../containers/Navigation/Navigation';
 
 class PatientList extends React.PureComponent {
 
@@ -31,6 +32,7 @@ class PatientList extends React.PureComponent {
     render() {
         return (
             <div>
+                <Navigation />
                 {this.state.patients.map((pat, i) => {
                     return (
                         <div key={i}>

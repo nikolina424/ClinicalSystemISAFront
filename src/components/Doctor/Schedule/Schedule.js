@@ -4,6 +4,7 @@ import Calendar from 'react-calendar';
 import {updateObject} from '../../../shared/utility';
 import Auxiliary from '../../../hoc/Auxiliary/Auxiliary';
 import axios from '../../../axios-objects';
+import Navigation from '../../../containers/Navigation/Navigation';
 
 class Schedule extends React.PureComponent {
 
@@ -178,6 +179,7 @@ class Schedule extends React.PureComponent {
     render() {
         return (
             <div>
+                <Navigation />
                 {this.renderSurgeryButton()}
                 {this.state.openScheduleSurgery ? this.renderSurgeryDiv() : null}
                 {this.renderExaminationButton()}

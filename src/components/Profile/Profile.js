@@ -3,6 +3,7 @@ import axios from '../../axios-objects';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import {updateObject} from '../../shared/utility';
 import './Profile.css';
+import Navigation from '../../containers/Navigation/Navigation';
 
 class Profile extends React.PureComponent {
 
@@ -123,45 +124,11 @@ class Profile extends React.PureComponent {
     }
 
     render() {
-        const token = sessionStorage.getItem('token');
-        const role = sessionStorage.getItem('role');
-
         return (
             <Auxiliary>
                 {this.state.loggedUser.user === null ? <p>Log in first, please.</p> :
                 <Auxiliary>
-                    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-                        <div className="container">
-                            <a className="navbar-brand" 
-                            href="/">Home page</a>
-                            {token === null ? 
-                                <Auxiliary>
-                                    <a className="navbar-brand" 
-                                    href="/login">Sign in</a>
-                                    <a className="navbar-brand" 
-                                    href="/register">Sign up</a>
-                                </Auxiliary>
-                            : null }
-                            {(token !== null && role === 'DOCTOR') ?
-                                <Auxiliary>
-                                    <a className="navbar-brand" 
-                                    href="/schedule">Schedule</a>
-                                </Auxiliary> 
-                            : null }
-                            {token !== null ? 
-                                <Auxiliary>
-                                    <a className="navbar-brand" 
-                                    href="/profile">Profile</a>
-                                </Auxiliary>
-                            : null }
-                            {token !== null ?
-                                <Auxiliary>
-                                    <a className="navbar-brand" style={{cursor: 'pointer'}}
-                                    onClick={this.logoutHandler}>Logout</a>
-                                </Auxiliary> 
-                            : null}
-                        </div>
-                    </nav>
+                    <Navigation />
                     <div className="container bootstrap snippet">
                         <div className="row">
                         <div className="col-sm-10" style={{marginTop: '30px', marginBottom: '30px'}}><h1>{this.state.loggedUser.user.firstName} {this.state.loggedUser.user.lastName}</h1></div>
