@@ -88,15 +88,26 @@ class Register extends React.PureComponent {
                             onChange={(event) => this.inputChangeHandler(event, 'city')}/>
                         <input type="text" className="fadeIn eighth" name="country" placeholder="Country"
                             onChange={(event) => this.inputChangeHandler(event, 'country')}/>
+                            <br></br>
+                            <br></br>
                         <input type="number" className="fadeIn nineth inputNumber" name="phoneNumber" placeholder="Phone number"
                             onChange={(event) => this.inputChangeHandler(event, 'phoneNumber')}/>
+
+                            <br></br>
+                            <br></br>
+          
                         <input type="number" className="fadeIn tenth inputNumber" name="userId" placeholder="User ID"
+
                             onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
+                            <br></br>
+                            <br></br>
                         <select className="fadeIn eleventh" onChange={(event) => this.selectChangeHandler(event)}>
                             <option> Patient </option>
                             <option> Doctor </option>
                             <option> Nurse </option>
                         </select>
+                        <br></br>
+                        <br></br>
                         <input type="submit" className="fadeIn twelveth" value="Register" style={{cursor: 'pointer'}}
                             onClick={(event) => this.registerHandler(event)} />
                     </form>
