@@ -92,9 +92,12 @@ class Register extends React.PureComponent {
                             <br></br>
                         <input type="number" className="fadeIn nineth inputNumber" name="phoneNumber" placeholder="Phone number"
                             onChange={(event) => this.inputChangeHandler(event, 'phoneNumber')}/>
+
                             <br></br>
                             <br></br>
-                        <input type="number" className="fadeIn tenth inputNumber" name="userId" placeholder="JMBG"
+          
+                        <input type="number" className="fadeIn tenth inputNumber" name="userId" placeholder="User ID"
+
                             onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
                             <br></br>
                             <br></br>
