@@ -15,6 +15,7 @@ class AdminPage extends React.PureComponent {
                 user: null
             },
             ccadmins: [],
+            requests: [],
             openList: false,
             newAdmin: {
                 firstName: '',
@@ -58,6 +59,17 @@ class AdminPage extends React.PureComponent {
             if (response) {
                 this.setState({ccadmins: response.data});
             }
+        } catch(err) {
+            console.log(err);
+        }
+
+        try {
+            const response = await axios.get('/getRequests', {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            this.setState({requests: response.data});
         } catch(err) {
             console.log(err);
         }
@@ -108,6 +120,76 @@ class AdminPage extends React.PureComponent {
             }
         }
     }
+
+    approveHandler = async (event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        if (this.state.loggedUser.user.role === 'ADMINCC') {
+            try {
+                let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+                this.setState({requests: newRequests});
+
+                const response = await axios.post('/approveRegistration', req, {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    }
+    
+    declineHandler = async (event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        if (this.state.loggedUser.user.role === 'ADMINCC') {
+            try {
+                let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+                this.setState({requests: newRequests});
+                const response = await axios.put('/declineRegistration', req, {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    }
+
+    renderApproveDeclineButtons = (req) => {
+        return (
+            <Auxiliary>
+                {req.pending ? 
+                <Auxiliary>
+                    <button className="ui basic yellow button" style={{cursor: 'no-drop'}}>Approve</button>
+                    <button className="ui basic yellow button"style={{cursor: 'no-drop'}}>Decline</button>
+                </Auxiliary>
+                     :
+                <Auxiliary> 
+                    <button className="ui basic green button" onClick={(event) => this.approveHandler(event, req)}>Approve</button>
+                    <button className="ui basic red button" onClick={(event) => this.declineHandler(event, req)}>Decline</button>
+                </Auxiliary> }
+            </Auxiliary>
+        );
+    }
     
     render() {
         return (
@@ -129,7 +211,7 @@ class AdminPage extends React.PureComponent {
                                             <span className="date">Joined in 2020</span>
                                             </div>
                                             <div className="description">
-                                                {ad.phoneNumber}
+                                                0{ad.phoneNumber}
                                             </div>
                                         </div>
                                         <div className="extra content">
@@ -169,8 +251,31 @@ class AdminPage extends React.PureComponent {
                         : null}
                     </div>
 
-                    <div style={{float:'right', height:'100vw', width:'50%'}}>
-                        
+                    <div style={{float:'right', height:'100vw', width:'50%', marginTop:'30px'}}>
+                    <div className="ui cards">
+                            {this.state.requests.map((req, i) => {
+                                return (
+                                    <div className="card" key={i}>
+                                        <div className="content">
+                                            <div className="header">
+                                                {req.user.firstName} {req.user.lastName}
+                                            </div>
+                                            <div className="meta">
+                                                {req.user.role}
+                                            </div>
+                                            <div className="description">
+                                                New user requested permission for registration.
+                                            </div>
+                                        </div>
+                                        <div className="extra content">
+                                            <div className="ui two buttons">
+                                                {this.renderApproveDeclineButtons(req)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             </Auxiliary>
