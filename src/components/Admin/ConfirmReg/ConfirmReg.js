@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from '../../../axios-objects';
+import Navigation from '../../../containers/Navigation/Navigation';
 
 class ConfirmReg extends React.PureComponent {
 
@@ -22,8 +23,9 @@ class ConfirmReg extends React.PureComponent {
     }
 
     render() {
-        return ( 
-            <div> 
+        return (
+            <div>
+                <Navigation />
                 <p style={{fontSize: '30px'}}>You have been successfully registrated.</p>
             </div>
         );
