@@ -11,6 +11,7 @@ import ListOfClinics from './containers/ListOfClinics/ListOfClinics';
 import MedicalRecord from './containers/MedicalRecord/MedicalRecord';
 import AdminPage from './components/Admin/AdminPage/AdminPage';
 import ConfirmReg from './components/Admin/ConfirmReg/ConfirmReg';
+import Holiday from './components/Doctor/Holiday/Holiday';
 import PrivateRouteLogged from './components/PrivateRoute/PrivateRouteLogged';
 import PrivateRouteDoctor from './components/PrivateRoute/PrivateRouteDoctor';
 import PrivateRouteAdmin from './components/PrivateRoute/PrivateRouteAdmin';
@@ -23,12 +24,13 @@ class App extends Component {
           <Route path="/" exact component={Layout} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
+          <Route path="/confirm-account" component={ConfirmReg} />
           <PrivateRouteLogged path="/changePassword" component={ChangePassword} />
           <PrivateRouteDoctor path="/schedule" component={Schedule} />
           <PrivateRouteAdmin path="/adminPage" component={AdminPage} />
           <PrivateRouteLogged path="/profile" component={Profile} />
           <PrivateRouteDoctor path="/patientList" component={PatientList} />
-          <Route path="/confirm-account" component={ConfirmReg} />
+          <PrivateRouteDoctor path="/holiday" component={Holiday} />
 
           <Route path="/listOfClinics" component={ListOfClinics}/>
           <Route path="/medicalRecord" component={MedicalRecord}/>

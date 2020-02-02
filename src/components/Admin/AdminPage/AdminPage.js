@@ -174,6 +174,42 @@ class AdminPage extends React.PureComponent {
         }
     }
 
+    approveHoliday = async (event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            const response = await axios.post('/approveHoliday', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if(response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    declineHoliday = async (event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            const response = await axios.put('/declineHoliday', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if(response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     renderApproveDeclineButtons = (req) => {
         return (
             <Auxiliary>
@@ -184,8 +220,17 @@ class AdminPage extends React.PureComponent {
                 </Auxiliary>
                      :
                 <Auxiliary> 
-                    <button className="ui basic green button" onClick={(event) => this.approveHandler(event, req)}>Approve</button>
-                    <button className="ui basic red button" onClick={(event) => this.declineHandler(event, req)}>Decline</button>
+                    {req.role === "REGISTRATION" ? 
+                        <Auxiliary>
+                            <button className="ui basic green button" onClick={(event) => this.approveHandler(event, req)}>Approve</button>
+                            <button className="ui basic red button" onClick={(event) => this.declineHandler(event, req)}>Decline</button>
+                        </Auxiliary>
+                    : req.role === "HOLIDAY" ? 
+                        <Auxiliary>
+                            <button className="ui basic green button" onClick={(event) => this.approveHoliday(event, req)}>Approve</button>
+                            <button className="ui basic red button" onClick={(event) => this.declineHoliday(event, req)}>Decline</button>
+                        </Auxiliary>
+                    : null}
                 </Auxiliary> }
             </Auxiliary>
         );
@@ -264,7 +309,8 @@ class AdminPage extends React.PureComponent {
                                                 {req.user.role}
                                             </div>
                                             <div className="description">
-                                                New user requested permission for registration.
+                                                {req.role === "REGISTRATION" ? 'New user requested permission for registration.' : 
+                                                 req.role === "HOLIDAY" ? 'New user requested permission for holiday.' : null}
                                             </div>
                                         </div>
                                         <div className="extra content">
