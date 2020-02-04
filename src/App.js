@@ -12,9 +12,11 @@ import MedicalRecord from './containers/MedicalRecord/MedicalRecord';
 import AdminPage from './components/Admin/AdminPage/AdminPage';
 import ConfirmReg from './components/Admin/ConfirmReg/ConfirmReg';
 import Holiday from './components/Doctor/Holiday/Holiday';
+import Room from './components/Admin/Room/Room';
 import PrivateRouteLogged from './components/PrivateRoute/PrivateRouteLogged';
 import PrivateRouteDoctor from './components/PrivateRoute/PrivateRouteDoctor';
 import PrivateRouteAdmin from './components/PrivateRoute/PrivateRouteAdmin';
+import PrivateRouteAdministrator from './components/PrivateRoute/PrivateRouteAdministrator';
 
 class App extends Component {
   render() {
@@ -31,6 +33,7 @@ class App extends Component {
           <PrivateRouteLogged path="/profile" component={Profile} />
           <PrivateRouteDoctor path="/patientList" component={PatientList} />
           <PrivateRouteDoctor path="/holiday" component={Holiday} />
+          <PrivateRouteAdministrator path="/rooms" component={Room} />
 
           <Route path="/listOfClinics" component={ListOfClinics}/>
           <Route path="/medicalRecord" component={MedicalRecord}/>
