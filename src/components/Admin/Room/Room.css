@@ -1,0 +1,21 @@
+.buttonAdd {
+    width: 4vw;
+    height: 3vw;
+    align-self: center;
+    position: inherit;
+    top: 40%;
+}
+
+.popupAdd {
+    height: 70%;
+    position: initial!important;
+    justify-content: center;
+}
+
+.searchDiv {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+}
