@@ -168,7 +168,7 @@ class Popup extends React.PureComponent {
     modifyRoom = async(event, room) => {
         event.preventDefault();
         const token = sessionStorage.getItem('token');
-        const modRoom = this.state.modifyRoom;
+        let modRoom = this.state.modifyRoom;
         modRoom.roomId = room.id;
         if (this.state.modifyRoom.number === null) {
             modRoom.number = room.number;
