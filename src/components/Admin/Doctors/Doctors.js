@@ -33,14 +33,6 @@ class PopupAdd extends React.PureComponent {
         this.setState({newDoctor: updatedObject});
     }
 
-    selectChangeHandler = (event) => {
-        let updatedObject = updateObject(this.state.newDoctor, {
-            nesto: event.target.value
-        });
-
-        this.setState({newDoctor: updatedObject});
-    }
-
     addNewDoctor = async(event) => {
         event.preventDefault();
         const token = sessionStorage.getItem('token');
