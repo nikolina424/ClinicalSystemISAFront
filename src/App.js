@@ -14,6 +14,7 @@ import ConfirmReg from './components/Admin/ConfirmReg/ConfirmReg';
 import Holiday from './components/Doctor/Holiday/Holiday';
 import Room from './components/Admin/Room/Room';
 import Clinic from './components/Admin/Clinic/Clinic';
+import Doctors from './components/Admin/Doctors/Doctors';
 import PrivateRouteLogged from './components/PrivateRoute/PrivateRouteLogged';
 import PrivateRouteDoctor from './components/PrivateRoute/PrivateRouteDoctor';
 import PrivateRouteAdmin from './components/PrivateRoute/PrivateRouteAdmin';
@@ -37,6 +38,7 @@ class App extends Component {
           <PrivateRouteDoctor path="/holiday" component={Holiday} />
           <PrivateRouteAdministrator path="/rooms" component={Room} />
           <PrivateRouteClinicAdmin path="/clinic" component={Clinic} />
+          <PrivateRouteClinicAdmin path="/doctors" component={Doctors} />
 
           <Route path="/listOfClinics" component={ListOfClinics}/>
           <Route path="/medicalRecord" component={MedicalRecord}/>

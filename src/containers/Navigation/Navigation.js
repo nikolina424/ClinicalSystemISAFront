@@ -44,6 +44,8 @@ class Navigation extends React.PureComponent {
                                 <Auxiliary>
                                     <a className="navbar-brand"
                                     href="/clinic">Clinic</a>
+                                    <a className="navbar-brand"
+                                    href="/doctors">Doctors</a>
                                 </Auxiliary>
                             : null }
                             {(token !== null & (role === 'ADMINC' || role === 'ADMINCC')) ?
