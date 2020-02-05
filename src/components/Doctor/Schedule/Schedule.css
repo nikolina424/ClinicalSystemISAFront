@@ -41,3 +41,10 @@
     align-items: center;
     margin: auto;
 }
+
+.mainDiv {
+    margin: auto;
+    padding: 10px;
+    align-items: center;
+    text-align: center;
+}
