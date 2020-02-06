@@ -255,17 +255,34 @@ class Room extends React.PureComponent {
     componentDidMount = async() => {
         const token = sessionStorage.getItem('token');
 
-        try {
-            const response = await axios.get('/getAllRooms', {
-                headers: {
-                    'Authorization' : 'Bearer ' + token
+        if (sessionStorage.getItem('role') === 'ADMINCC') {
+            try {
+                const response = await axios.get('/getAllRooms', {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    this.setState({rooms: response.data});
                 }
-            });
-            if (response) {
-                this.setState({rooms: response.data});
+            } catch(err) {
+                console.log(err);
             }
-        } catch(err) {
-            console.log(err);
+        }
+
+        if (sessionStorage.getItem('role') === 'ADMINC') {
+            try {
+                const response = await axios.get('/getAllClinicRooms', {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    this.setState({rooms: response.data});
+                }
+            } catch(err) {
+                console.log(err);
+            }
         }
     }
 
