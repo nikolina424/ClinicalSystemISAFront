@@ -11,6 +11,12 @@ class Profile extends React.PureComponent {
         super(props);
 
         this.state = {
+            showPasswordDiv: false,
+            pass: {
+                oldPass: '',
+                newPass: '',
+                newRepeatPass: ''
+            },
             loggedUser: {
                 user: null
             },
@@ -59,12 +65,25 @@ class Profile extends React.PureComponent {
         }
     }
 
+    showPassword = (event) => {
+        event.preventDefault();
+        this.setState((prevState) => ({showPasswordDiv: !prevState.showPasswordDiv}));
+    }
+
     inputChangeHandler = (event, type) => {
         let updatedObject = updateObject(this.state.profile, {
             [type]: event.target.value
         });
 
         this.setState({profile: updatedObject});
+    }
+
+    inputPasswordHandler = (event, type) => {
+        let updatedObject = updateObject(this.state.pass, {
+            [type]: event.target.value
+        });
+
+        this.setState({pass: updatedObject});
     }
 
     editProfileHandler = async () => {
@@ -123,6 +142,32 @@ class Profile extends React.PureComponent {
         }
     }
 
+    changePassword = async(event) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+        const {oldPass, newPass, newRepeatPass} = this.state.pass;
+        const data = {
+            oldPass,
+            newPass,
+            newRepeatPass
+        }
+
+        if(this.state.loggedUser.user.role === 'ADMINCC' || this.state.loggedUser.user === 'ADMINC') {
+            try {
+                const response = await axios.put('/changeAdminPassword', data, {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token 
+                    }
+                });
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }
+    }
+
     render() {
         return (
             <Auxiliary>
@@ -136,9 +181,9 @@ class Profile extends React.PureComponent {
                         <div className="row">
                             <div className="col-sm-3">
                                 <div className="text-center" style={{marginLeft: '27px', marginBottom: '30px'}}>
-                                    <img src={'images/' + this.state.loggedUser.user.image} className="avatar img-circle img-thumbnail" alt="img" />
+                                    <img src={'images/' + this.state.loggedUser.user.image} className="avatar img-circle img-thumbnail" alt="Profile" />
                                     <h6>Upload a different photo</h6>
-                                    <input type="file" className="text-center center-block file-upload" style={{width: '100px'}}
+                                    <input type="file" className="text-center center-block file-upload" style={{width: '90px'}}
                                     onChange={(event) => this.imageHandler(event)} name="file"/>
                                 </div>
                             </div>
@@ -198,11 +243,36 @@ class Profile extends React.PureComponent {
                                         </div>
                                         <div className="form-group">
                                             <div className="col-xs-6">
-                                                <label htmlFor="jmbg" style={{width: '115px'}}><h4>JMBG</h4></label>
+                                                <label htmlFor="jmbg" style={{width: '115px'}}><h4>User ID</h4></label>
                                                 <input type="text" style={{width: '980px'}} defaultValue={this.state.loggedUser.user.userId} 
                                                  onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
                                             </div>
                                         </div>
+                                        {(this.state.loggedUser.user.role === 'ADMINC' || this.state.loggedUser.user.role === 'ADMINCC') ?
+                                        <Auxiliary>
+                                            <button className="btn btn-lg btn-success" onClick={(event) => this.showPassword(event)}>
+                                                <i className="glyphicon glyphicon-ok-sign"></i> Change password
+                                            </button>
+                                            {this.state.showPasswordDiv ? 
+                                                <Auxiliary> 
+                                                    <div className="form-group">
+                                                        <div className="col-xs-6">
+                                                            <label htmlFor="oldPassword" style={{width: '115px'}}></label>
+                                                            <input type="password" style={{width: '980px'}} placeholder="Old password"
+                                                            onChange={(event) => this.inputPasswordHandler(event, 'oldPass')}/>
+                                                            <label htmlFor="password" style={{width: '115px'}}></label>
+                                                            <input type="password" style={{width: '980px'}} placeholder="New password"
+                                                            onChange={(event) => this.inputPasswordHandler(event, 'newPass')}/>
+                                                            <label htmlFor="repeatPassword" style={{width: '115px'}}></label>
+                                                            <input type="password" style={{width: '980px'}} placeholder="Repeat password"
+                                                            onChange={(event) => this.inputPasswordHandler(event, 'newRepeatPass')}/>
+                                                        </div>
+                                                    </div>
+                                                    <button className="btn btn-lg btn-success" onClick={(event) => this.changePassword(event)}>
+                                                        <i className="glyphicon glyphicon-ok-sign"></i> Save password
+                                                    </button>
+                                                </Auxiliary> : null }
+                                        </Auxiliary> : null}
                                         <div className="form-group">
                                             <div className="col-xs-12">
                                                     <br></br>
