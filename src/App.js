@@ -7,8 +7,6 @@ import ChangePassword from './containers/ChangePassword/ChangePassword';
 import Schedule from './components/Doctor/Schedule/Schedule';
 import PatientList from './components/Doctor/PatientList/PatientList';
 import Profile from './components/Profile/Profile';
-import ListOfClinics from './containers/ListOfClinics/ListOfClinics';
-import MedicalRecord from './containers/MedicalRecord/MedicalRecord';
 import AdminPage from './components/Admin/AdminPage/AdminPage';
 import ConfirmReg from './components/Admin/ConfirmReg/ConfirmReg';
 import Holiday from './components/Doctor/Holiday/Holiday';
@@ -42,9 +40,6 @@ class App extends Component {
           <PrivateRouteAdministrator path="/appointments" component={Appointment} />
           <PrivateRouteClinicAdmin path="/clinic" component={Clinic} />
           <PrivateRouteClinicAdmin path="/doctors" component={Doctors} />
-
-          <Route path="/listOfClinics" component={ListOfClinics}/>
-          <Route path="/medicalRecord" component={MedicalRecord}/>
         </Switch>
       </div>
     );
