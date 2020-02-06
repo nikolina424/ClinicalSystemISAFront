@@ -156,7 +156,9 @@ class Doctors extends React.PureComponent {
         const searchString = this.state.inputSearch;
 
         for(let i = 0; i < oldDoctors.length; i++) {
-            if((oldDoctors[i].firstName.indexOf(searchString) > -1) || (oldDoctors[i].lastName.indexOf(searchString) > -1)) {
+            if((oldDoctors[i].firstName.indexOf(searchString) > -1) || (oldDoctors[i].lastName.indexOf(searchString) > -1)
+            || (oldDoctors[i].firstName + ' ' + oldDoctors[i].lastName).indexOf(searchString) > -1 ||
+            (oldDoctors[i].firstName + oldDoctors[i].lastName).indexOf(searchString) > -1) {
                 newDoctors.push(oldDoctors[i]);
             }
         }
