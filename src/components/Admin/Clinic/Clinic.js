@@ -64,7 +64,7 @@ class Popup extends React.PureComponent {
                 <Modal.Header>Modify clinic</Modal.Header>
                 <Modal.Content image>
                     <Image wrapped size='medium' src='images/room.png' />
-                    <Modal.Description>
+                    <Modal.Description style={{width: '70%'}}>
                         <Header>Change clinics informations</Header>
                         <p> Clinic name: </p>
                         <input type="text" defaultValue={clinic !== null ? clinic.name : ''} 

@@ -15,6 +15,7 @@ import Holiday from './components/Doctor/Holiday/Holiday';
 import Room from './components/Admin/Room/Room';
 import Clinic from './components/Admin/Clinic/Clinic';
 import Doctors from './components/Admin/Doctors/Doctors';
+import Appointment from './components/Admin/Appointments/Appointments';
 import PrivateRouteLogged from './components/PrivateRoute/PrivateRouteLogged';
 import PrivateRouteDoctor from './components/PrivateRoute/PrivateRouteDoctor';
 import PrivateRouteAdmin from './components/PrivateRoute/PrivateRouteAdmin';
@@ -38,6 +39,7 @@ class App extends Component {
           <PrivateRouteDoctor path="/patientList" component={PatientList} />
           <PrivateRouteDoctor path="/holiday" component={Holiday} />
           <PrivateRouteAdministrator path="/rooms" component={Room} />
+          <PrivateRouteAdministrator path="/appointments" component={Appointment} />
           <PrivateRouteClinicAdmin path="/clinic" component={Clinic} />
           <PrivateRouteClinicAdmin path="/doctors" component={Doctors} />
 
