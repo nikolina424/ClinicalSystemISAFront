@@ -152,7 +152,7 @@ class Profile extends React.PureComponent {
             newRepeatPass
         }
 
-        if(this.state.loggedUser.user.role === 'ADMINCC' || this.state.loggedUser.user === 'ADMINC') {
+        if(this.state.loggedUser.user.role !== 'PATIENT') {
             try {
                 const response = await axios.put('/changeAdminPassword', data, {
                     headers: {
@@ -248,7 +248,7 @@ class Profile extends React.PureComponent {
                                                  onChange={(event) => this.inputChangeHandler(event, 'userId')}/>
                                             </div>
                                         </div>
-                                        {(this.state.loggedUser.user.role === 'ADMINC' || this.state.loggedUser.user.role === 'ADMINCC') ?
+                                        {(this.state.loggedUser.user.role !== 'PATIENT') ?
                                         <Auxiliary>
                                             <button className="btn btn-lg btn-success" onClick={(event) => this.showPassword(event)}>
                                                 <i className="glyphicon glyphicon-ok-sign"></i> Change password
