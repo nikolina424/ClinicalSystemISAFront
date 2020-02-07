@@ -210,6 +210,24 @@ class AdminPage extends React.PureComponent {
         }
     }
 
+    deleteAdmin = async(event, ad) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            const response = await axios.put('/deleteUser', ad, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if (response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     renderApproveDeclineButtons = (req) => {
         return (
             <Auxiliary>
@@ -256,7 +274,8 @@ class AdminPage extends React.PureComponent {
                                             <span className="date">Joined in 2020</span>
                                             </div>
                                             <div className="description">
-                                                0{ad.phoneNumber}
+                                                Phone number: 0{ad.phoneNumber} <br />
+                                                Email: {ad.email}
                                             </div>
                                         </div>
                                         <div className="extra content">
@@ -264,6 +283,12 @@ class AdminPage extends React.PureComponent {
                                             <i className="user icon"></i>
                                                 See your profile
                                             </a> : null }
+                                            {((ad.id !== this.state.loggedUser.user.id) && !ad.predefined && this.state.loggedUser.user.predefined) ? 
+                                            <a onClick={(event) => this.deleteAdmin(event, ad)}>
+                                                <i className="delete icon" style={{cursor: 'pointer'}}></i>
+                                                Delete user
+                                            </a>
+                                            : null }
                                         </div>
                                         </div>
                                 </div>

@@ -315,21 +315,31 @@ class Room extends React.PureComponent {
         const oldRooms = this.state.rooms;
         let newRooms = [];
         const searchString = this.state.inputSearch;
-        for(let i = 0; i < oldRooms.length; i++) {
-            if(oldRooms[i].clinic.name.indexOf(searchString) > -1) {
-                newRooms.push(oldRooms[i]);
-            }
-        }
 
-        this.setState({searchedRooms: newRooms});
+        if (sessionStorage.getItem('role') === 'ADMINCC') {
+            for(let i = 0; i < oldRooms.length; i++)
+                if(oldRooms[i].clinic.name.indexOf(searchString) > -1)
+                    newRooms.push(oldRooms[i]);
+
+            this.setState({searchedRooms: newRooms});
+        }
+        if (sessionStorage.getItem('role') === 'ADMINC') {
+            for(let i = 0; i < oldRooms.length; i++)
+                if(oldRooms[i].number.toString().indexOf(searchString) > -1)
+                    newRooms.push(oldRooms[i]);
+
+            this.setState({searchedRooms: newRooms});
+        }
     }
 
     renderRooms() {
         return (
             <Auxiliary>
                 <div className="searchDiv">
-                    <input type="text" placeholder="Search rooms by clinic names" style={{width: '50%'}} 
-                        onChange={(event) => this.inputSearchHandler(event)} /> 
+                    {sessionStorage.getItem('role') === 'ADMINCC' ? <input type="text" placeholder="Search rooms by clinic names" style={{width: '50%'}} 
+                        onChange={(event) => this.inputSearchHandler(event)} /> :
+                        <input type="text" placeholder="Search rooms by rooms number" style={{width: '50%'}} 
+                        onChange={(event) => this.inputSearchHandler(event)} />}
                     <button className="ui primary button" style={{width: '10%'}} onClick={(event) => this.searchRooms(event)}>
                         <i className="search icon" style={{marginRight: '1.5vw'}}>Search</i>
                     </button>
