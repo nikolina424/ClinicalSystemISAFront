@@ -244,7 +244,7 @@ class Room extends React.PureComponent {
 
         this.state = {
             rooms: [],
-            searchedRooms: [],
+            searchedRooms: null,
             openModal: false,
             openModalAdd: false,
             choosenRoom: null,
@@ -318,7 +318,11 @@ class Room extends React.PureComponent {
 
         if (sessionStorage.getItem('role') === 'ADMINCC') {
             for(let i = 0; i < oldRooms.length; i++)
-                if(oldRooms[i].clinic.name.indexOf(searchString) > -1)
+                if(oldRooms[i].clinic.name.toUpperCase().indexOf(searchString.toUpperCase()) > -1)
+                    newRooms.push(oldRooms[i]);
+                else if(oldRooms[i].clinic.name.toUpperCase().replace(/\s+/g, '').indexOf(searchString.toUpperCase()) > -1)
+                    newRooms.push(oldRooms[i]);
+                else if(oldRooms[i].clinic.name.toUpperCase().indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1)
                     newRooms.push(oldRooms[i]);
 
             this.setState({searchedRooms: newRooms});
@@ -346,7 +350,7 @@ class Room extends React.PureComponent {
                 </div>
                 
                 <div className="ui link cards" style={{marginTop: '10px', justifyContent: 'center'}}>
-                    {this.state.searchedRooms.length === 0 ? this.state.rooms.map((room, i) => {
+                    {this.state.searchedRooms === null ? this.state.rooms.map((room, i) => {
                         return (
                             <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
                                 <div className="image">

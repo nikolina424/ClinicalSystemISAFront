@@ -278,8 +278,8 @@ class Appointment extends React.PureComponent {
             examinations: [],
             operations: [],
             inputSearch: '',
-            searchedExaminations: [],
-            searchedOperations: [],
+            searchedExaminations: null,
+            searchedOperations: null,
             openModal: false,
             pickApp: null,
             pickType: ''
@@ -297,7 +297,12 @@ class Appointment extends React.PureComponent {
                     }
                 });
                 if (response) {
-                    this.setState({examinations: response.data});
+                    let array = [];
+                    for(let i = 0; i < response.data.length; i++)
+                        if (response.data[i].approved)
+                            array.push(response.data[i]);
+
+                    this.setState({examinations: array});
                 }
             } catch(err) {
                 console.log(err);
@@ -309,7 +314,12 @@ class Appointment extends React.PureComponent {
                     }
                 });
                 if (response) {
-                    this.setState({operations: response.data});
+                    let array = [];
+                    for(let i = 0; i < response.data.length; i++)
+                        if (response.data[i].approved)
+                            array.push(response.data[i]);
+
+                    this.setState({operations: array});
                 }
             } catch(err) {
                 console.log(err);
@@ -368,18 +378,24 @@ class Appointment extends React.PureComponent {
         let newOp = [];
         const searchString = this.state.inputSearch;
 
-        for(let i = 0; i < oldEx.length; i++) {
-            if(oldEx[i].description.indexOf(searchString) > -1) {
+        for(let i = 0; i < oldEx.length; i++)
+            if(oldEx[i].description.toUpperCase().indexOf(searchString.toUpperCase()) > -1)
                 newEx.push(oldEx[i]);
-            }
-        }
+            else if(oldEx[i].description.toUpperCase().replace(/\s+/g, '').indexOf(searchString.toUpperCase()) > -1)
+                newEx.push(oldEx[i]);
+            else if(oldEx[i].description.toUpperCase().indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1)
+                newEx.push(oldEx[i]);
+
         this.setState({searchedExaminations: newEx});
 
-        for(let i = 0; i < oldOp.length; i++) {
-            if(oldOp[i].description.indexOf(searchString) > -1) {
+        for(let i = 0; i < oldOp.length; i++)
+            if(oldOp[i].description.toUpperCase().indexOf(searchString.toUpperCase()) > -1)
                 newOp.push(oldOp[i]);
-            }
-        }
+            else if (oldOp[i].description.toUpperCase().replace(/\s+/g, '').indexOf(searchString.toUpperCase()) > -1)
+                newOp.push(oldOp[i]);
+            else if (oldOp[i].description.toUpperCase().indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1)
+                newOp.push(oldOp[i]);
+
         this.setState({searchedOperations: newOp});
     }
 
@@ -400,7 +416,7 @@ class Appointment extends React.PureComponent {
     renderExaminations() {
         return (
             <Auxiliary>
-                {this.state.searchedExaminations.length === 0 ? this.state.examinations.map((ex, i) => {
+                {this.state.searchedExaminations === null ? this.state.examinations.map((ex, i) => {
                     return (
                         <div className="card" key={i} onClick={(event) => this.pickApp(event, ex, 'examination')}>
                             <div className="image">
@@ -445,7 +461,7 @@ class Appointment extends React.PureComponent {
     renderOperations() {
         return (
             <Auxiliary>
-                 {this.state.searchedOperations.length === 0 ? this.state.operations.map((op, i) => {
+                 {this.state.searchedOperations === null ? this.state.operations.map((op, i) => {
                     return (
                         <div className="card" key={i} onClick={(event) => this.pickApp(event, op, 'operation')}>
                             <div className="image">
