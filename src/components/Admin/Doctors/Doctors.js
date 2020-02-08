@@ -96,7 +96,7 @@ class Doctors extends React.PureComponent {
             doctors: [],
             openModalAdd: false,
             inputSearch: '',
-            searchedDoctors: []
+            searchedDoctors: null
         }
     }
 
@@ -156,9 +156,13 @@ class Doctors extends React.PureComponent {
         const searchString = this.state.inputSearch;
 
         for(let i = 0; i < oldDoctors.length; i++) {
-            if((oldDoctors[i].firstName.indexOf(searchString) > -1) || (oldDoctors[i].lastName.indexOf(searchString) > -1)
-            || (oldDoctors[i].firstName + ' ' + oldDoctors[i].lastName).indexOf(searchString) > -1 ||
-            (oldDoctors[i].firstName + oldDoctors[i].lastName).indexOf(searchString) > -1) {
+            if((oldDoctors[i].firstName.toUpperCase().indexOf(searchString.toUpperCase()) > -1) || (oldDoctors[i].lastName.toUpperCase().indexOf(searchString.toUpperCase()) > -1)
+            || (oldDoctors[i].firstName.toUpperCase() + ' ' + oldDoctors[i].lastName.toUpperCase()).indexOf(searchString.toUpperCase()) > -1 ||
+            (oldDoctors[i].firstName.toUpperCase() + oldDoctors[i].lastName.toUpperCase()).indexOf(searchString.toUpperCase()) > -1) {
+                newDoctors.push(oldDoctors[i]);
+            } else if((oldDoctors[i].firstName.toUpperCase().indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1) || (oldDoctors[i].lastName.toUpperCase().indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1)
+            || (oldDoctors[i].firstName.toUpperCase() + ' ' + oldDoctors[i].lastName.toUpperCase()).indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1 ||
+            (oldDoctors[i].firstName.toUpperCase() + oldDoctors[i].lastName.toUpperCase()).indexOf(searchString.toUpperCase().replace(/\s+/g, '')) > -1) {
                 newDoctors.push(oldDoctors[i]);
             }
         }
@@ -178,7 +182,7 @@ class Doctors extends React.PureComponent {
                 </div>
 
                 <div className="ui link cards" style={{marginTop: '10px', justifyContent: 'center'}}>
-                    {this.state.searchedDoctors.length === 0 ? this.state.doctors.map((doc, i) => {
+                    {this.state.searchedDoctors === null ? this.state.doctors.map((doc, i) => {
                         return (
                             <div className="card" style={{cursor: 'default'}} key={i}>
                                 <div className="image">

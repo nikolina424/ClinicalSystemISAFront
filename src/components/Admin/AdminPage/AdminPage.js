@@ -174,6 +174,102 @@ class AdminPage extends React.PureComponent {
         }
     }
 
+    approveExamination = async(event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+            this.setState({requests: newRequests});
+            const response = await axios.post('/approveExamination', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if(response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    approveOperation = async(event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+            this.setState({requests: newRequests});
+            const response = await axios.post('/approveOperation', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if(response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    declineOperation = async(event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+            this.setState({requests: newRequests});
+            const response = await axios.put('/declineOperation', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if (response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
+    declineExamination = async(event, req) => {
+        event.preventDefault();
+        const token = sessionStorage.getItem('token');
+
+        try {
+            let newRequests = [...this.state.requests];
+                for (let i = 0; i < newRequests.length; i++)
+                    if (newRequests[i].id === req.id)
+                        newRequests[i].pending = true;
+                
+            this.setState({requests: newRequests});
+            const response = await axios.put('/declineExamination', req, {
+                headers: {
+                    'Authorization' : 'Bearer ' + token
+                }
+            });
+            if (response) {
+                window.location.reload();
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     approveHoliday = async (event, req) => {
         event.preventDefault();
         const token = sessionStorage.getItem('token');
@@ -248,8 +344,18 @@ class AdminPage extends React.PureComponent {
                             <button className="ui basic green button" onClick={(event) => this.approveHoliday(event, req)}>Approve</button>
                             <button className="ui basic red button" onClick={(event) => this.declineHoliday(event, req)}>Decline</button>
                         </Auxiliary>
+                    : req.role === "EXAMINATION" ?
+                        <Auxiliary>
+                            <button className="ui basic green button" onClick={(event) => this.approveExamination(event, req)}>Approve</button>
+                            <button className="ui basic red button" onClick={(event) => this.declineExamination(event, req)}>Decline</button>
+                        </Auxiliary> 
+                    : req.role === "OPERATION" ?
+                        <Auxiliary>
+                            <button className="ui basic green button" onClick={(event) => this.approveOperation(event, req)}>Approve</button>
+                            <button className="ui basic red button" onClick={(event) => this.declineOperation(event, req)}>Decline</button>
+                        </Auxiliary>
                     : null}
-                </Auxiliary> }
+                </Auxiliary>}
             </Auxiliary>
         );
     }
@@ -335,7 +441,11 @@ class AdminPage extends React.PureComponent {
                                             </div>
                                             <div className="description">
                                                 {req.role === "REGISTRATION" ? 'New user requested permission for registration.' : 
-                                                 req.role === "HOLIDAY" ? 'New user requested permission for holiday.' : null}
+                                                 req.role === "HOLIDAY" ? 'New user requested permission for holiday.' :
+                                                 req.role === "EXAMINATION" ? 'Doctor ' + req.user.firstName + ' ' + req.user.lastName + ' requested to schedule examination' :
+                                                 req.role === "OPERATION" ? 'Doctor ' + req.user.firstName + ' ' + req.user.lastName + ' requested to schedule operation'
+                                                 : null}
+
                                             </div>
                                         </div>
                                         <div className="extra content">
