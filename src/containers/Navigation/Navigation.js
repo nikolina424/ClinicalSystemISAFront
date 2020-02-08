@@ -34,6 +34,8 @@ class Navigation extends React.PureComponent {
                                     href="/holiday">Holiday</a>
                                     <a className="navbar-brand"
                                     href="/patientList">Patients</a>
+                                    <a className="navbar-brand"
+                                    href="/rooms">Rooms</a>
                                 </Auxiliary> 
                             : null }
                             {(token !== null && role === 'ADMINCC') ?

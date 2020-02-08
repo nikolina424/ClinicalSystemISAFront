@@ -20,6 +20,7 @@ import PrivateRouteAdmin from './components/PrivateRoute/PrivateRouteAdmin';
 import PrivateRouteAdministrator from './components/PrivateRoute/PrivateRouteAdministrator';
 import PrivateRouteClinicAdmin from './components/PrivateRoute/PrivateRouteClinicAdmin';
 import PrivateRouteDoctorAndClinicAdmin from './components/PrivateRoute/PrivateRouteDoctorAndClinicAdmin';
+import PrivateRouteAdministratorAndDoctor from './components/PrivateRoute/PrivateRouteAdministratorAndDoctor';
 
 class App extends Component {
   render() {
@@ -36,7 +37,7 @@ class App extends Component {
           <PrivateRouteLogged path="/profile" component={Profile} />
           <PrivateRouteDoctor path="/patientList" component={PatientList} />
           <PrivateRouteDoctor path="/holiday" component={Holiday} />
-          <PrivateRouteAdministrator path="/rooms" component={Room} />
+          <PrivateRouteAdministratorAndDoctor path="/rooms" component={Room} />
           <PrivateRouteAdministrator path="/appointments" component={Appointment} />
           <PrivateRouteClinicAdmin path="/clinic" component={Clinic} />
           <PrivateRouteClinicAdmin path="/doctors" component={Doctors} />
