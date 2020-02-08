@@ -22,18 +22,21 @@ class PopupAdd extends React.PureComponent {
 
     componentDidMount = async() => {
         const token = sessionStorage.getItem('token');
+        const role = sessionStorage.getItem('role');
 
-        try {
-            const response = await axios.get('/getClinics', {
-                headers: {
-                    'Authorization' : 'Bearer ' + token
+        if (role === "ADMINCC" || role === 'ADMINC') {
+            try {
+                const response = await axios.get('/getClinics', {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    this.setState({clinics: response.data});
                 }
-            });
-            if (response) {
-                this.setState({clinics: response.data});
+            } catch(err) {
+                console.log(err);
             }
-        } catch(err) {
-            console.log(err);
         }
     }
 
@@ -123,18 +126,21 @@ class Popup extends React.PureComponent {
 
     componentDidMount = async() => {
         const token = sessionStorage.getItem('token');
+        const role = sessionStorage.getItem('role');
 
-        try {
-            const response = await axios.get('/getClinics', {
-                headers: {
-                    'Authorization' : 'Bearer ' + token
+        if (role === 'ADMINCC' || role === 'ADMINC') {
+            try {
+                const response = await axios.get('/getClinics', {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    this.setState({clinics: response.data});
                 }
-            });
-            if (response) {
-                this.setState({clinics: response.data});
+            } catch(err) {
+                console.log(err);
             }
-        } catch(err) {
-            console.log(err);
         }
     }
 
@@ -248,7 +254,8 @@ class Room extends React.PureComponent {
             openModal: false,
             openModalAdd: false,
             choosenRoom: null,
-            inputSearch: ''
+            inputSearch: '',
+            checkBox: false
         }
     }
 
@@ -273,6 +280,21 @@ class Room extends React.PureComponent {
         if (sessionStorage.getItem('role') === 'ADMINC') {
             try {
                 const response = await axios.get('/getAllClinicRooms', {
+                    headers: {
+                        'Authorization' : 'Bearer ' + token
+                    }
+                });
+                if (response) {
+                    this.setState({rooms: response.data});
+                }
+            } catch(err) {
+                console.log(err);
+            }
+        }
+
+        if (sessionStorage.getItem('role') === 'DOCTOR') {
+            try {
+                const response = await axios.get('/getAllRoomsFromDoctor', {
                     headers: {
                         'Authorization' : 'Bearer ' + token
                     }
@@ -327,7 +349,7 @@ class Room extends React.PureComponent {
 
             this.setState({searchedRooms: newRooms});
         }
-        if (sessionStorage.getItem('role') === 'ADMINC') {
+        if (sessionStorage.getItem('role') === 'ADMINC' || sessionStorage.getItem('role') === 'DOCTOR') {
             for(let i = 0; i < oldRooms.length; i++)
                 if(oldRooms[i].number.toString().indexOf(searchString) > -1)
                     newRooms.push(oldRooms[i]);
@@ -336,11 +358,16 @@ class Room extends React.PureComponent {
         }
     }
 
+    checkBoxHandler = (event) => {
+        this.setState({checkBox: event.target.checked});
+    }
+
     renderRooms() {
         return (
             <Auxiliary>
                 <div className="searchDiv">
-                    {sessionStorage.getItem('role') === 'ADMINCC' ? <input type="text" placeholder="Search rooms by clinic names" style={{width: '50%'}} 
+                    {(sessionStorage.getItem('role') === 'ADMINCC') ? 
+                        <input type="text" placeholder="Search rooms by clinic names" style={{width: '50%'}} 
                         onChange={(event) => this.inputSearchHandler(event)} /> :
                         <input type="text" placeholder="Search rooms by rooms number" style={{width: '50%'}} 
                         onChange={(event) => this.inputSearchHandler(event)} />}
@@ -348,50 +375,148 @@ class Room extends React.PureComponent {
                         <i className="search icon" style={{marginRight: '1.5vw'}}>Search</i>
                     </button>
                 </div>
+
+                {sessionStorage.getItem('role') === 'DOCTOR' ?
+                    <Auxiliary>
+                        <input type="checkbox" style={{margin: 'auto', display: 'block'}} 
+                            onChange={(event) => this.checkBoxHandler(event)} /> 
+                        <p style={{margin: 'auto', display: 'table'}} >Reserved</p>
+                    </Auxiliary>
+                : null}
                 
                 <div className="ui link cards" style={{marginTop: '10px', justifyContent: 'center'}}>
-                    {this.state.searchedRooms === null ? this.state.rooms.map((room, i) => {
-                        return (
-                            <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
-                                <div className="image">
-                                    <img src="/images/room.png" alt="RoomPicture"/>
-                                </div>
-                                <div className="content">
-                                    <div className="header">Room number {room.number} </div>
-                                    <div className="meta">
-                                        <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                    {sessionStorage.getItem('role') !== 'DOCTOR' ?
+                        <Auxiliary>
+                            {this.state.searchedRooms === null ? this.state.rooms.map((room, i) => {
+                                return (
+                                    <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                        <div className="image">
+                                            <img src="/images/room.png" alt="RoomPicture"/>
+                                        </div>
+                                        <div className="content">
+                                            <div className="header">Room number {room.number} </div>
+                                            <div className="meta">
+                                                <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                            </div>
+                                            <div className="description">
+                                                Room is in {room.clinic.name}.
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="description">
-                                        Room is in {room.clinic.name}.
+                                );
+                            }) :
+                            this.state.searchedRooms.map((room, i) => {
+                                return (
+                                    <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                        <div className="image">
+                                            <img src="/images/room.png" alt="RoomPicture"/>
+                                        </div>
+                                        <div className="content">
+                                            <div className="header">Room number {room.number} </div>
+                                            <div className="meta">
+                                                <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                            </div>
+                                            <div className="description">
+                                                Room is in {room.clinic.name}.
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        );
-                    }) :
+                                );
+                            })}
+                        </Auxiliary>
+                    : 
+                    <Auxiliary>
+                        {this.state.searchedRooms === null ? this.state.rooms.map((room, i) => {
+                            if (!this.state.checkBox) 
+                                return (
+                                    <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                        <div className="image">
+                                            <img src="/images/room.png" alt="RoomPicture"/>
+                                        </div>
+                                        <div className="content">
+                                            <div className="header">Room number {room.number} </div>
+                                            <div className="meta">
+                                                <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                            </div>
+                                            <div className="description">
+                                                Room is in {room.clinic.name}.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    );
+                            else if (this.state.checkBox)
+                                if (room.reserved)
+                                    return (
+                                        <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                            <div className="image">
+                                                <img src="/images/room.png" alt="RoomPicture"/>
+                                            </div>
+                                            <div className="content">
+                                                <div className="header">Room number {room.number} </div>
+                                                <div className="meta">
+                                                    <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                                </div>
+                                                <div className="description">
+                                                    Room is in {room.clinic.name}.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                else
+                                    return null;
+                            else
+                                return null;
+                        }) :
                     this.state.searchedRooms.map((room, i) => {
-                        return (
-                            <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
-                                <div className="image">
-                                    <img src="/images/room.png" alt="RoomPicture"/>
-                                </div>
-                                <div className="content">
-                                    <div className="header">Room number {room.number} </div>
-                                    <div className="meta">
-                                        <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                        if (!this.state.checkBox)
+                            return (
+                                <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                    <div className="image">
+                                        <img src="/images/room.png" alt="RoomPicture"/>
                                     </div>
-                                    <div className="description">
-                                        Room is in {room.clinic.name}.
+                                    <div className="content">
+                                        <div className="header">Room number {room.number} </div>
+                                        <div className="meta">
+                                            <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                        </div>
+                                        <div className="description">
+                                            Room is in {room.clinic.name}.
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
+                                );
+                        else if (this.state.checkBox)
+                            if (room.reserved)
+                                return (
+                                    <div className="card" key={i} onClick={(event) => this.pickRoom(event, room)}>
+                                        <div className="image">
+                                            <img src="/images/room.png" alt="RoomPicture"/>
+                                        </div>
+                                        <div className="content">
+                                            <div className="header">Room number {room.number} </div>
+                                            <div className="meta">
+                                                <label>{room.reserved ? 'Reserved' : 'Free'}</label>
+                                            </div>
+                                            <div className="description">
+                                                Room is in {room.clinic.name}.
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            else
+                                return null;
+                        else
+                            return null;
                     })}
+                    </Auxiliary>}
+                    
+                    {sessionStorage.getItem('role') !== 'DOCTOR' ?
                     <div className="card" style={{boxShadow: 'none', cursor: 'default'}}>
                         <button className="buttonAdd" onClick={(event) => this.addRoom(event)} 
                         data-tooltip="Add room to your feed" data-inverted="">
                             <i className="add icon"></i>
                         </button>
-                    </div>
+                    </div> : null}
                 </div>
             </Auxiliary>
         );
@@ -402,8 +527,11 @@ class Room extends React.PureComponent {
             <Auxiliary>
                 <Navigation />
                     {this.renderRooms()}
-                    <PopupAdd openModalAdd={this.state.openModalAdd} closeModalAdd={this.closeModalAdd} />
-                    <Popup room={this.state.choosenRoom} openModal={this.state.openModal} closeModal={this.closeModal} /> 
+                    {sessionStorage.getItem('role') !== 'DOCTOR' ? 
+                    <Auxiliary>
+                        <PopupAdd openModalAdd={this.state.openModalAdd} closeModalAdd={this.closeModalAdd} />
+                        <Popup room={this.state.choosenRoom} openModal={this.state.openModal} closeModal={this.closeModal} /> 
+                    </Auxiliary> : null}
             </Auxiliary>
         );
     }
