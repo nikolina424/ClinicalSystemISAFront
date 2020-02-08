@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 
-const PrivateRouteAdmin = ({component: Component, ...rest}) => {
+const PrivateRouteAdministrator = ({component: Component, ...rest}) => {
     return (
         <Route {...rest} render={props => (
             (sessionStorage.getItem('role') === 'ADMINCC' || sessionStorage.getItem('role') === 'ADMINC') ?
@@ -11,4 +11,4 @@ const PrivateRouteAdmin = ({component: Component, ...rest}) => {
     );
 };
 
-export default PrivateRouteAdmin;
+export default PrivateRouteAdministrator;
