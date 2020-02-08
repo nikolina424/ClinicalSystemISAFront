@@ -80,7 +80,7 @@ class PatientList extends React.PureComponent {
                                     <label>Patient</label>
                                 </div>
                                 <div className="description">
-                                    Patient email is {pat.email}. You can contact him through his phone number {pat.phoneNumber} .
+                                    Patient email is {pat.email}. You can contact him through his phone number 0{pat.phoneNumber} .
                                     He lives in {pat.city}, {pat.country}.
                                 </div>
                             </div>
