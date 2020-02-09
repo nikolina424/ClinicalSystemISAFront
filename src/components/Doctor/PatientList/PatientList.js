@@ -11,7 +11,7 @@ class PatientList extends React.PureComponent {
         this.state = {
             patients: [],
             inputSearch: '',
-            searchPatients: []
+            searchPatients: null
         }
     }
 
@@ -42,9 +42,13 @@ class PatientList extends React.PureComponent {
         let newPatients = [];
         const string = this.state.inputSearch;
         for(let i = 0; i < this.state.patients.length; i++) {
-            if ((this.state.patients[i].firstName.indexOf(string) > -1) || (this.state.patients[i].lastName.indexOf(string) > -1)
-                || ((this.state.patients[i].firstName + ' ' + this.state.patients[i].lastName).indexOf(string) > -1) ||
-                ((this.state.patients[i].firstName + this.state.patients[i].lastName).indexOf(string) > -1)) {
+            if ((this.state.patients[i].firstName.toUpperCase().indexOf(string.toUpperCase()) > -1) || (this.state.patients[i].lastName.toUpperCase().indexOf(string.toUpperCase()) > -1)
+                || ((this.state.patients[i].firstName.toUpperCase() + ' ' + this.state.patients[i].lastName.toUpperCase()).indexOf(string.toUpperCase()) > -1) ||
+                ((this.state.patients[i].firstName.toUpperCase() + this.state.patients[i].lastName.toUpperCase()).indexOf(string.toUpperCase()) > -1)) {
+                newPatients.push(this.state.patients[i]);
+            } else if ((this.state.patients[i].firstName.toUpperCase().indexOf(string.toUpperCase().replace(/\s+/g, '')) > -1) || (this.state.patients[i].lastName.toUpperCase().indexOf(string.toUpperCase().replace(/\s+/g, '')) > -1)
+            || ((this.state.patients[i].firstName.toUpperCase() + ' ' + this.state.patients[i].lastName.toUpperCase()).indexOf(string.toUpperCase().replace(/\s+/g, '')) > -1) ||
+            ((this.state.patients[i].firstName.toUpperCase() + this.state.patients[i].lastName.toUpperCase()).indexOf(string.toUpperCase().replace(/\s+/g, '')) > -1)) {
                 newPatients.push(this.state.patients[i]);
             }
         }
@@ -68,7 +72,7 @@ class PatientList extends React.PureComponent {
     renderPatients() {
         return(
             <Auxiliary>
-                {this.state.searchPatients.length === 0 ? this.state.patients.map((pat, i) => {
+                {this.state.searchPatients === null ? this.state.patients.map((pat, i) => {
                     return (
                         <div className="card" key={i} >
                             <div className="image">
@@ -99,7 +103,7 @@ class PatientList extends React.PureComponent {
                                     <label>Patient</label>
                                 </div>
                                 <div className="description">
-                                    Patient email is {pat.email}. You can contact him through his phone number {pat.phoneNumber} .
+                                    Patient email is {pat.email}. You can contact him through his phone number 0{pat.phoneNumber} .
                                     He lives in {pat.city}, {pat.country}.
                                 </div>
                             </div>
