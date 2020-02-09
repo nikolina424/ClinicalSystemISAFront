@@ -214,7 +214,8 @@ class Register extends React.PureComponent {
                     </form>
                     <div id="formFooter">
                         {this.state.validation ? <p style={{color: 'red'}} >Invalide input fields! Please fill every field!</p> : null}
-                        <a>Register and enjoy our website!</a>
+                        <a>Register and enjoy our <p className="aRegister underlineHover" 
+                        onClick={() => this.props.history.push('/')}>Website </p>!</a>
                     </div>
                 </div>
             </div>
