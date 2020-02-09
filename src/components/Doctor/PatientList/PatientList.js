@@ -59,7 +59,7 @@ class PatientList extends React.PureComponent {
         return (
             <Auxiliary>
                 <div className="searchDiv">
-                    <input type="text" placeholder="Search appointments by names" style={{width: '50%'}} 
+                    <input type="text" placeholder="Search patients by names" style={{width: '50%'}} 
                         onChange={(event) => this.inputSearchHandler(event)} /> 
                     <button className="ui primary button" style={{width: '10%'}} onClick={(event) => this.searchPatients(event)}>
                         <i className="search icon" style={{marginRight: '1.5vw'}}>Search</i>
