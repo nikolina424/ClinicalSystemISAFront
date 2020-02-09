@@ -8,6 +8,7 @@ class Register extends React.PureComponent {
         super(props);
 
         this.state = {
+            clinics: null,
             auth: {
                 firstName: '',
                 lastName: '',
@@ -19,7 +20,8 @@ class Register extends React.PureComponent {
                 country: '',
                 phoneNumber: null,
                 userId: null,
-                role: 'Patient'
+                role: 'Patient',
+                clinicName: 'Dom zdravlja NS'
             },
             validation: false,
             validate: {
@@ -37,6 +39,17 @@ class Register extends React.PureComponent {
         }
     }
 
+    componentDidMount = async() => {
+        try {
+            const response = await axios.get('/getAllClinics');
+            if (response) {
+                this.setState({clinics: response.data});
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
+
     validateHandler = (type) => {
         let updatedObject = updateObject(this.state.validate, {
             [type]: true
@@ -47,7 +60,7 @@ class Register extends React.PureComponent {
 
     registerHandler = async (event) => {
         event.preventDefault();
-        const {firstName, lastName, email, password, repeatPassword, address, city, country, phoneNumber, userId, role} = this.state.auth;
+        const {firstName, lastName, email, password, repeatPassword, address, city, country, phoneNumber, userId, role, clinicName} = this.state.auth;
         const reg = {
             firstName,
             lastName,
@@ -60,6 +73,7 @@ class Register extends React.PureComponent {
             phoneNumber,
             userId,
             role : role.toUpperCase(),
+            clinicName,
             returnSecureToken: true
         };
         const {firstNameV, lastNameV, emailV, passwordV, repeatPasswordV, addressV, cityV, countryV, phoneNumberV, userIdV} = this.state.validate;
@@ -127,6 +141,26 @@ class Register extends React.PureComponent {
         });
 
         this.setState({auth: updatedObject});
+    }
+
+    selectClinicHandler = (event) => {
+        let updatedObject = updateObject(this.state.auth, {
+            clinicName: event.target.value
+        });
+
+        this.setState({auth: updatedObject});
+    }
+
+    renderClinics = () => {
+        return (
+            this.state.clinics.map((cl, i) => {
+                return(
+                    <option key={i}>
+                        {cl.name}
+                    </option>
+                );
+            })
+        );
     }
 
     render() {
@@ -207,8 +241,15 @@ class Register extends React.PureComponent {
                             <option> Doctor </option>
                             <option> Nurse </option>
                         </select>
-                        <br></br>
-                        <br></br>
+                            <br></br>
+                            <br></br>
+                        
+                        {(this.state.clinics !== null && this.state.auth.role !== 'Patient') ?
+                        <select className="fadeIn eleventh" onChange={(event) => this.selectClinicHandler(event)}
+                            defaultValue={this.state.clinics[0].name} style={{margin: '10px auto', display: 'block'}} >
+                            {this.renderClinics()}
+                        </select> : null }
+
                         <input type="submit" className="fadeIn twelveth" value="Register" style={{cursor: 'pointer'}}
                             onClick={(event) => this.registerHandler(event)} />
                     </form>
