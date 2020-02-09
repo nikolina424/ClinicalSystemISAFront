@@ -3,6 +3,7 @@ import {updateObject} from '../../shared/utility';
 import './Login.css';
 import axios from '../../axios-objects';
 import jwt_decode from 'jwt-decode';
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 
 class Login extends React.PureComponent {
 
@@ -13,7 +14,8 @@ class Login extends React.PureComponent {
             auth: {
                 email: '',
                 password: ''
-            }
+            },
+            validation: false
         }
     }
 
@@ -40,6 +42,7 @@ class Login extends React.PureComponent {
                     this.props.history.push('/');
             }
         } catch(err) {
+            this.setState({validation: true});
             console.log(err);
         }
     }
@@ -50,6 +53,7 @@ class Login extends React.PureComponent {
         });
 
         this.setState({auth});
+        this.setState({validation: false});
     }
 
     render() {
@@ -57,14 +61,25 @@ class Login extends React.PureComponent {
             <div className="wrapper fadeInDown">
                 <div id="formContent">
                     <form>
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="email"
-                            onChange={(event) => this.inputChangeHandler(event, 'email')}/>
-                        <input type="password" id="password" className="fadeIn third" name="login" placeholder="password"
-                            onChange={(event) => this.inputChangeHandler(event, 'password')}/>
+                        {this.state.validation ?
+                        <Auxiliary>
+                            <input type="text" id="login" className="fadeIn second" name="login" placeholder="email"
+                            onChange={(event) => this.inputChangeHandler(event, 'email')} style={{borderColor: 'red'}} />
+                            <input type="password" id="password" className="fadeIn third" name="login" placeholder="password"
+                            onChange={(event) => this.inputChangeHandler(event, 'password')} style={{borderColor: 'red'}} />
+                        </Auxiliary>    
+                        : 
+                        <Auxiliary>
+                            <input type="text" id="login" className="fadeIn second" name="login" placeholder="email"
+                            onChange={(event) => this.inputChangeHandler(event, 'email')} />
+                            <input type="password" id="password" className="fadeIn third" name="login" placeholder="password"
+                            onChange={(event) => this.inputChangeHandler(event, 'password')} />
+                        </Auxiliary>}
                         <input type="submit" className="fadeIn fourth" value="Sign in" style={{cursor: 'pointer'}}
                             onClick={(event) => this.loginHandler(event)} />
                     </form>
                     <div id="formFooter">
+                        {this.state.validation ? <p style={{color: 'red'}} >Invalide email or password !</p> : null}
                         <a>Don't have an account? <p className="aRegister underlineHover" 
                         onClick={() => this.props.history.push('/register')}>Register </p> now!</a>
                     </div>
